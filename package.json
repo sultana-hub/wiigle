@@ -1,0 +1,52 @@
+{
+  "name": "wiggle-wag",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.4",
+    "@mui/material": "^6.4.4",
+    "appwrite": "^17.0.0",
+    "axios": "^1.7.9",
+    "cra-template": "1.2.0",
+    "dotenv": "^16.4.7",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^7.1.5",
+    "react-scripts": "5.0.1",
+    "sweetalert2": "^11.17.2",
+    "uuid": "^11.0.5",
+    "web-vitals": "^4.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "npx json-server database/db.json --port 1000"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}

@@ -1,0 +1,24 @@
+
+.sliding{
+    height: 100vh;
+}
+
+.sliding img{
+width:100%;
+object-fit:cover;
+height:100%
+}
+
+.banner_text{
+    width:60%;
+    position:absolute;
+    bottom:10%;
+    left:20%;
+    text-align:center;
+    color:white
+}
+
+.banner_head{
+    font-size:30px;
+    font-weight:700px
+}
