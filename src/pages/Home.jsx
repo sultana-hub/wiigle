@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid2';
 import { Typography, Button } from '@mui/material';
 import { useAuth } from "../hooks/useAuth";
 import { useQuery } from 'react-query';
-import GetAllPets from './GetAllPets';
+import GetAllPets from '../pages/pets/GetAllPets';
 
 const Home = () => {
 
@@ -28,7 +28,7 @@ const Home = () => {
      
       <CarouselSlide />
       <Grid sx={{ textAlign: "center", color:"rgb(63, 57, 113)" }}>
-      <h1>Welcome To Wiggle Wag Pet Shop    </h1>
+      <h1>Welcome To Wiggle Wag Pet Service & Shop    </h1>
       </Grid>
    
       <GetAllPets/>

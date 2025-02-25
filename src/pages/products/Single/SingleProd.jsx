@@ -43,7 +43,7 @@ const SingleProd = () => {
     console.log("single", data)
     //add to cart button
     const { data: user } = useAuth(); // Get logged-in user
-    const { mutate, isLoading: isCartLoading } = useAddToCart();
+    // const { mutate, isLoading: isCartLoading } = useAddToCart();
 
     // const handleAddToCart = () => {
     //     if (!user) {
@@ -67,6 +67,15 @@ const SingleProd = () => {
     if (isError) {
         return (<p>opps something went wrong</p>)
     }
+
+  if(!user){
+        return(
+        <p>Please Login First</p>
+        
+    )
+    }
+
+
     return (
         <Box sx={{ justifyContent: "center", textAlign: "center", justifyItems: "center", marginBottom: "100px", marginTop: "90px" }}>
 

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { fetchAllProducts } from '../../services/queryFunctions'
 import { useQuery } from 'react-query'
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
-import { Typography, Button } from '@mui/material';
-import { useAuth } from "../../hooks/useAuth";
+// import { Typography, Button } from '@mui/material';
+// import { useAuth } from "../../hooks/useAuth";
+import { Box,  Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
 import Search from '../../components/Search';
 import { useAddToCart } from "../../hooks/cartHooks/useAddToCart";
 import { useNavigate } from 'react-router-dom';
@@ -20,10 +21,13 @@ const filterData = (query, data) => {
 };
 
 const Products = () => {
-    const navigate = useNavigate()
-    const { data: products, isLoading: productsLoading, error: productsErr } = useQuery("products", fetchAllProducts)
-    console.log("all prod data", products)
 
+    const navigate = useNavigate()
+    //get all products
+    const { data: products, isLoading: productsLoading, isError, error: productsErr } = useQuery("products", fetchAllProducts)
+    console.log("all prod data", products)
+    //get user auth
+    // const { data: user } = useAuth()
 
     //data filter for searching
     const [searchQuery, setSearchQuery] = useState("");
@@ -40,69 +44,67 @@ const Products = () => {
 
         }),
     }));
+    if (productsLoading) {
+        return (<p>...Loading</p>)
+    }
 
+    if (isError) {
+        return (<p>...Opps something went wrong</p>)
+    }
+
+  
 
     return (
-        <div>
-            <Box sx={{ flexGrow: 1, marginBottom: "100px" }}>
-                <Grid container spacing={2} sx={{ textAlign: "center", justifyContent: "center", justifyItems: "center" }}>
-
-
-                    <Grid sx={{ textAlign: "center" }}>
-                        {/* <h1>search product here   </h1> */}
-
-                        <Typography variant='h6' sx={{ marginTop: "25px", marginBottom: "50px" }}> <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></Typography>
-                        {/* <p> Please enter your product name for searching </p> */}
-                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-
-                            {
-                                dataFiltered?.map((item, index) => (
-                                    <Grid size={3} marginLeft={0} key={index}>
-                                        <Item style={{ boxShadow: "none" }} elevation={0}><img src={item.image} width="200" height="150" alt="my cap" /></Item>
-                                        <p>{item.food}</p>
-
-                                        {/* <Button type="button" variant="contained" onClick={handleAddToCart}
-                                            sx={{ mt: 2, borderRadius: "50px", bgcolor: "#4ca86c", color: "white", "&:hover": { bgcolor: "darkgreen" } }}>
-                                            {isCartLoading ? "Adding..." : "Add to Cart"}
-                                        </Button> */}
-                                        <Button
-                                            variant="contained"
-                                            // startIcon={<ShoppingCart />} // Icon on the left side
-                                            sx={{
-                                                background: "linear-gradient(135deg,rgb(104, 106, 110) 0%,rgb(63, 57, 113) 100%)", // Gradient
-                                                color: "white",
-                                                fontWeight: "bold",
-                                                textTransform: "none",
-                                                borderRadius: "30px", // Rounded edges
-                                                padding: "10px 20px",
-                                                boxShadow: "0px 4px 10px rgba(255, 126, 95, 0.4)", // Soft shadow
-                                                transition: "all 0.3s ease",
-                                                "&:hover": {
-                                                    background: "linear-gradient(135deg, #e66465 0%, #9198e5 100%)", // New gradient on hover
-                                                    boxShadow: "0px 6px 15px rgba(230, 100, 101, 0.5)", // Stronger shadow
-                                                },
-                                            }}
-                                            onClick={() => navigate(`single/${item.$id}`)}
-                                        >
-
-                                            View Details
-                                        </Button>
-
-
-                                        <br />
-                                        <br />
-
-                                    </Grid>
-                                ))
-                            }
-
-
-                        </Grid>
-                    </Grid>
-
-                </Grid>
-            </Box>
-        </div>
+        <>
+      
+       
+        <Box sx={{ flexGrow: 1, mb: 10, px: 2 }}> 
+        {/* Search Bar */}
+        <Typography variant="h6" sx={{ mt: 3, mb: 5, textAlign: "center" }}>
+          <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        </Typography>
+  
+        {/* Products Grid */}
+        <Grid container spacing={3} justifyContent="center">
+          {dataFiltered?.map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Card 
+                sx={{
+                  boxShadow: 3,
+                  borderRadius: "10px",
+                  transition: "0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="150"
+                  image={item.image}
+                  alt="product"
+                  sx={{ borderRadius: "10px 10px 0 0" }}
+                />
+                <CardContent sx={{ textAlign: "center" }}>
+                  <Typography variant="h6">{item.food}</Typography>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      borderRadius: "50px",
+                      bgcolor: "#000033",
+                      color: "white",
+                      "&:hover": { bgcolor: "rgb(43, 36, 109)" },
+                    }}
+                    onClick={() => navigate(`single/${item?.$id}`)}
+                  >
+                    View Details
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      </>
     )
 }
 

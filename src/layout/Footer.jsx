@@ -1,61 +1,61 @@
-import React, { useState } from 'react'
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import{ Typography,Box,Container} from '@mui/material';
+ import React, { useState } from 'react';
+import { Container,  Typography, Link, Box, IconButton } from "@mui/material";
+import Grid from "@mui/material/Grid2"
+import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
+
 const Footer = () => {
-  let [value, setValue] = useState("")
   return (
-    <>
-    <Box
-component="footer"
-      sx={{
-        position: "sticky",
-        bottom: 0,
-        width: "100%",
-        mt: "auto",
-        bgcolor: "#cce0ff",
-        color: "white",
-        py: 2,
-        textAlign: "center",
-      }}
-    >
-      <Container>
-        <Typography variant="body2" color='black'>© 2025 Webskitter Academy. All rights reserved.</Typography>
+    <Box sx={{ bgcolor: "#1a1a1a", color: "white", py: 3, mt: 4 }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={3} justifyContent="center">
+          
+          {/* Contact Info */}
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6" gutterBottom>Contact Us</Typography>
+            <Typography>Email: support@wigglewag.com</Typography>
+            <Typography>Phone: + (91) 7584567890</Typography>
+            <Typography>Address: 22 Ghosh Lane, Kolkata, WB</Typography>
+          </Grid>
+
+          {/* Social Media Links */}
+          <Grid item xs={12} sm={4} textAlign="center">
+            <Typography variant="h6" gutterBottom>Follow Us</Typography>
+            <Box>
+              <IconButton component="a" href="https://facebook.com" target="_blank" sx={{ color: "white" }}>
+                <Facebook />
+              </IconButton>
+              <IconButton component="a" href="https://twitter.com" target="_blank" sx={{ color: "white" }}>
+                <Twitter />
+              </IconButton>
+              <IconButton component="a" href="https://instagram.com" target="_blank" sx={{ color: "white" }}>
+                <Instagram />
+              </IconButton>
+              <IconButton component="a" href="https://linkedin.com" target="_blank" sx={{ color: "white" }}>
+                <LinkedIn />
+              </IconButton>
+            </Box>
+          </Grid>
+
+          {/* Copyright Section */}
+          <Grid item xs={12} sm={4} textAlign="center">
+            <Typography variant="h6" gutterBottom>Quick Links</Typography>
+            {/* <Link href="/contact" color="inherit" underline="none" display="block">Contact</Link> */}
+            <Link href="/about" color="inherit" underline="none" display="block">About Us</Link>
+            <Link href="/" color="inherit" underline="none" display="block">Privacy & Terms</Link>
+            
+          
+          </Grid>
+        </Grid>
+
+        {/* Bottom Copyright */}
+        <Box mt={3} textAlign="center">
+          <Typography variant="body2">
+            © {new Date().getFullYear()}wigglewag. All rights reserved.
+          </Typography>
+        </Box>
       </Container>
-{/* 
-      <BottomNavigation
-          position="static"
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
+    </Box>
+  );
+};
 
-        }}
-        className='bg-success'
-        sx={{
-          position: 'static',
-          backgroundColor: "#cce0ff",
-          bottom: 0, width: '100%',
-          height: "100px"
-
-        }}
-      >
-        <Typography component="div" sx={{ mt: "20px" }}>
-
-          Copyright ©2025 Webskitter Academy
-        </Typography>
-         <BottomNavigationAction label="Recents"  icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> 
-      </BottomNavigation> */}
-      
-      
-</Box>
-    </>
-  )
-
-}
-
-export default Footer
+export default Footer;

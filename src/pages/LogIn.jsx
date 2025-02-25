@@ -38,8 +38,8 @@ const LogIn = () => {
     return (
         <>
             <Container maxWidth="sm">
-                <Box sx={{ mt: 10, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
-                    <Typography variant="h5" align="center" gutterBottom>
+                <Box sx={{ mt: 5, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
+                    <Typography variant="h5" align="center" gutterBottom color="rgb(63, 57, 113)">
                         Login
                     </Typography>
                     <form onSubmit={handleSubmit}>
@@ -76,7 +76,7 @@ const LogIn = () => {
 
 
                         <Button type="submit" variant="contained" fullWidth disabled={isLoading}
-                            sx={{ mt: 2, borderRadius: "50px", bgcolor: "#4ca86c", color: "white", "&:hover": { bgcolor: "darkgreen" } }}>
+                            sx={{ mt: 2, borderRadius: "50px", bgcolor: "#000033", color: "white", "&:hover": { bgcolor: "rgb(43, 36, 109)" } }}>
                             {isLoading ? <CircularProgress size={24} /> : "Login"}
                         </Button>
                     </form>

@@ -68,3 +68,4 @@ export const updateCartItem = async ({ id, quantity }) => {
     quantity,
   });
 };
+

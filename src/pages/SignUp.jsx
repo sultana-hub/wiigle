@@ -17,8 +17,9 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { mutate, isLoading, isError, error, isSuccess } = useRegisterUser();
 
+  const { mutate, isLoading, isError, error, isSuccess,onSuccess } = useRegisterUser();
+    console.log("mutate register",mutate)
   const handleRegister = (e) => {
     e.preventDefault();
     mutate({
@@ -43,11 +44,11 @@ const SignUp = () => {
     <div>
       
     
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Box sx={{ mt: 5, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
         {isError && <p>Error: {error.message}</p>}
         {isSuccess && <p>Registration successful!</p>}
-          <Typography variant="h5" align="center" gutterBottom>
+          <Typography variant="h5" align="center" gutterBottom color="rgb(63, 57, 113)">
             Registration
           </Typography>
           <form onSubmit={handleRegister} id="regisForm">
@@ -89,7 +90,7 @@ const SignUp = () => {
               helperText={error?.password}
              
             />
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,borderRadius: "50px",bgcolor: "rgb(77, 73, 116)", color: "white", "&:hover": { bgcolor: "rgb(43, 36, 109)" }}}>
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,borderRadius: "50px",bgcolor: "#000033", color: "white", "&:hover": { bgcolor: "rgb(43, 36, 109)" }}}>
               Register
             </Button>
           </form>

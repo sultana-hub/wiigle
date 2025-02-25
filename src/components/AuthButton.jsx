@@ -17,10 +17,10 @@ const AuthButton = () => {
     const [password, setPassword] = useState("");
 
     // Handle login submission
-    const handleLogin = (e) => {
-        e.preventDefault();
-        login({ email, password });
-    };
+    // const handleLogin = (e) => {
+    //     e.preventDefault();
+    //     login({ email, password });
+    // };
 
     // Handle logout
     const handleLogout = () => {
@@ -33,7 +33,10 @@ const AuthButton = () => {
         <>
             {!user ? (
                 // Show Login Form when user is not logged in
-                <Button color="inherit" ><Link to="login" style={{textDecoration:"none",color:"inherit" }}>LogIn</Link></Button>
+                <Button color="inherit" ><Link to="login"
+                 style={{textDecoration:"none",color:"inherit" }}
+                //  onClick={handleLogin}
+                >LogIn</Link></Button>
 
             )
 

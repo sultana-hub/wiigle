@@ -1,7 +1,7 @@
 import { Box, Typography, Button, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const NotFound = () => {
+const ErrorPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,18 +14,24 @@ const NotFound = () => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          padding: 2,
         }}
       >
         <Typography variant="h2" fontWeight="bold" color="error" sx={{ mb: 2 }}>
           404
         </Typography>
         <Typography variant="h5" sx={{ mb: 2, color: "gray" }}>
-          Oops! Page Not Found
+          Oops! The page you are looking for does not exist.
         </Typography>
         <Typography variant="body1" sx={{ mb: 3, color: "gray" }}>
-          The page you are looking for might have been removed or is temporarily unavailable.
+          The link might be broken or the page may have been removed.
         </Typography>
+
+        {/* Illustration (Optional) */}
+        <img
+          src="https://cdn.dribbble.com/users/1138875/screenshots/4669703/404_animation.gif"
+          alt="Error"
+          style={{ maxWidth: "80%", height: "auto", marginBottom: "20px" }}
+        />
 
         <Button
           variant="contained"
@@ -45,20 +51,9 @@ const NotFound = () => {
         >
           Go Back Home
         </Button>
-
-        {/* Illustration (Optional) */}
-        <img
-          src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif"
-          alt="Not Found"
-          style={{ maxWidth: "80%", height: "auto", marginBottom: "20px" }}
-        />
-
-       
       </Box>
     </Container>
   );
 };
 
-export default NotFound;
-
-
+export default ErrorPage;
