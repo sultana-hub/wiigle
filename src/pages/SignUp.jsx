@@ -1,108 +1,179 @@
-import { useState } from "react";
-import { useRegisterUser } from "../hooks/useRegitration";
-import { ID } from "appwrite";
+
+import { useState, useMemo } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import { Container, Button, Typography } from "@mui/material";
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import { Link } from "react-router-dom";
+import {
+  Container,
+  Button,
+  Typography,
+  Alert,
+  TextField,
+  Box,
+  IconButton,
+  InputAdornment
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { account } from "../../src/appwriteConf/appwriteConfig";
+import { ID } from "appwrite";
+import SuccessToast from "../components/SuccessToast";
 import Swal from "sweetalert2";
 const SignUp = () => {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const { mutate, isLoading, isError, error, isSuccess,onSuccess } = useRegisterUser();
-    console.log("mutate register",mutate)
-  const handleRegister = (e) => {
+  // State for form inputs
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // State for error messages
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Validator function
+  const validator = () => {
+    if (!formData.name) return "Name is required.";
+    if (!formData.email) return "Email is required.";
+    if (!formData.email.match(/^([a-z0-9.-]+)@([a-z]{5,12}).([a-z.]{2,20})$/)) return "Email must be valid";
+    if (formData.password.length < 8) return "Password must be at least 8 characters.";
+    if (formData.password !== formData.confirmPassword) return "Passwords do not match.";
+    return ""; // No errors
+  };
+
+  // Checking if the form is valid using useMemo (for performance optimization)
+  const isFormValid = useMemo(() => validator() === "", [formData]);
+
+  // React Query Mutation for registration
+  const mutation = useMutation(async () => {
+    const response = await account.create(ID.unique(), formData.email, formData.password, formData.name);
+    console.log("User registered:", response);
+    return response;
+  });
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    mutate({
-      userId: ID.unique(), // Generates a unique user ID
-      email,
-      password,
-      name,
+    const validationError = validator();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setError(""); // Clear previous errors
+
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+       
+        // <SuccessToast/>
+        Swal.fire({
+          title: "Good job!",
+          text: "Registration done!",
+          icon: "success"
+        });
+        navigate("/login");
+      },
+      onError: (err) => {
+        setError(err.message);
+      },
     });
-    // Swal.fire({
-    //   title: "Good job!",
-    //   text: "Registered Successfully!",
-    //   icon: "success"
-    // });
-    document.getElementById("regisForm").reset()
-    setTimeout(()=>{
-      navigate("/login")
-    },1000)
-   
   };
 
   return (
-    <div>
-      
-    
-      <Container maxWidth="md">
-        <Box sx={{ mt: 5, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
-        {isError && <p>Error: {error.message}</p>}
-        {isSuccess && <p>Registration successful!</p>}
-          <Typography variant="h5" align="center" gutterBottom color="rgb(63, 57, 113)">
-            Registration
+    <Container maxWidth="md">
+      <Box sx={{ mt: 5, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        <Typography variant="h5" align="center" gutterBottom color="rgb(63, 57, 113)">
+          Registration
+        </Typography>
+        <form onSubmit={handleSubmit} id="regisForm">
+          <TextField
+            fullWidth
+            label="Name"
+            name="name"
+            variant="outlined"
+            margin="normal"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            type="email"
+            variant="outlined"
+            margin="normal"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            autoComplete="new-email"
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            variant="outlined"
+            margin="normal"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            autoComplete="new-password"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            fullWidth
+            label="Confirm Password"
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            variant="outlined"
+            margin="normal"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+            autoComplete="new-password"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 2, borderRadius: "50px", bgcolor: "#000033", color: "white", "&:hover": { bgcolor: "rgb(43, 36, 109)" } }}
+          >
+            Register
+          </Button>
+        </form>
+        <Box sx={{ textAlign: "center", mt: 2 }}>
+          <Typography>
+            Existing user? <Button onClick={() => navigate("/login")}>Login</Button>
           </Typography>
-          <form onSubmit={handleRegister} id="regisForm">
-
-            <TextField
-               type="text"
-              fullWidth
-              label="Name"
-              variant="outlined"
-              margin="normal"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={!!error?.name}
-              helperText={error?.name}
-            />
-
-
-
-            <TextField
-               type="email"
-              fullWidth
-              label="Email"
-              variant="outlined"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!error?.email}
-              helperText={error?.email}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!error?.password}
-              helperText={error?.password}
-             
-            />
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,borderRadius: "50px",bgcolor: "#000033", color: "white", "&:hover": { bgcolor: "rgb(43, 36, 109)" }}}>
-              Register
-            </Button>
-          </form>
-<br/>
-<Box sx={{textAlign:"center"}}><Typography>Existing user go to<Link to="/login" style={{textDecoration:"none"}}><span> Login</span></Link></Typography></Box>
-
-
         </Box>
-      </Container>
-
-
-    </div>
+      </Box>
+    </Container>
   );
 };
 

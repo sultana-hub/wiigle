@@ -1,48 +1,58 @@
 
 import React, { useState, useEffect } from "react";
 import { Button, CircularProgress, List, ListItem, Typography } from "@mui/material";
-import { fetchCartItems } from '../services/cartQueryFunction'
+import { fetchCartItems } from '../../services/cartQueryFunction'
 import { useQuery } from "react-query";
-import { account } from "../appwriteConf/appwriteConfig";
-import { removeFromCart } from '../services/cartQueryFunction'
-import { useMutation,useQueryClient  } from "react-query";
+import { account } from "../../appwriteConf/appwriteConfig";
+import { removeFromCart } from '../../services/cartQueryFunction'
+import { useMutation, useQueryClient } from "react-query";
 import { Card, CardMedia, CardContent, Box, Container } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { database } from "../appwriteConf/appwriteConfig";
-import { useAuth } from "../hooks/useAuth";
-import {updateCartItem} from '../services/cartQueryFunction'
+import { database } from "../../appwriteConf/appwriteConfig";
+import { useAuth } from "../../hooks/useAuth";
+import { updateCartItem } from '../../services/cartQueryFunction'
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from 'material-react-toastify';
+import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../services/cartQueryFunction";
+import {useUpdateStock} from '../../hooks/cartHooks/useUpdateStock'
+import ErrorPage from "../ErrorPage";
 const Cart = () => {
-const queryClient=useQueryClient()
-  const{data:user}=useAuth()
+  const navigate=useNavigate()
+    // const { data: user } = useAuth()
+  const updateStockMutation = useUpdateStock();
+  const queryClient = useQueryClient()
+  const { data: user } = useAuth()
   const user_id = user?.$id
   const { data: cartItems, isLoading, error } = useQuery(
     ["cart", user_id],
     () => fetchCartItems(user_id),
     {
-      enabled: !!user_id, // Ensures query only runs if userId is available
+      enabled: !!user_id, // Ensuring query only runs if userId is available
     }
   );
+console.log("cart item",cartItems)
+  // Updating quantity when increment/decrement buttons are clicked
 
-// Update quantity when increment/decrement buttons are clicked
+  // Mutation to update item quantity
+  const mutation = useMutation(updateCartItem, {
+    onSuccess: () => {
 
-// Mutation to update item quantity
-const mutation = useMutation(updateCartItem, {
-  onSuccess: () => {
-    queryClient.invalidateQueries(["cart"]); // Refetch cart data after update
-  },
-});
+      queryClient.invalidateQueries(["cart"]); // Refetching cart data after update
+    },
+  });
 
-// Increase quantity
-const handleIncrease = (itemId,quantity) => {
-  mutation.mutate({ id: itemId, quantity: quantity + 1 });
-};
+  // Increase quantity
+  const handleIncrease = (itemId, quantity) => {
+    mutation.mutate({ id: itemId, quantity: quantity + 1 });
+  };
 
-// Decrease quantity (Min: 1)
-const handleDecrease = (itemId,quantity) => {
-  if (quantity > 0) {
-    mutation.mutate({ id: itemId, quantity: quantity - 1 });
-  }
-};
+  // Decrease quantity (Min: 1)
+  const handleDecrease = (itemId, quantity) => {
+    if (quantity > 0) {
+      mutation.mutate({ id: itemId, quantity: quantity - 1 });
+    }
+  };
   //check out
   console.log("cart items", cartItems)
   const totalPrice = cartItems?.reduce(
@@ -52,15 +62,22 @@ const handleDecrease = (itemId,quantity) => {
 
   //remove from cart
   const { mutate } = useMutation(removeFromCart, {
-    onSuccess: () => alert("deleted"),
+    onSuccess: () => {
+      alert("Item deleted 😔!")
+      // Swal.fire({
+      //   title: "😔!",
+      //   text: "Item deleted!"
+      // });
+      // toast.success('Item deleted');
+    },
     onError: () => console.log("error in delete")
   })
-  //delete the cart item
+  //deleting the cart item
   const onDelete = (itemId) => {
     mutate(itemId)
   }
 
-  //clear the cart after checkout 
+  //clearing the cart after checkout 
   const clearCart = async () => {
     try {
       for (const item of cartItems) {
@@ -72,16 +89,57 @@ const handleDecrease = (itemId,quantity) => {
     }
   }
 
-  const handleCheckout = () => {
+  const handleCheckout = async (cartItems, userId) => {
     window.confirm("Proceeding to Checkout...");
-    clearCart()
-    window.open("https://dashboard.stripe.com/test/payment-links/create?verify_email=true")
-   
-    alert("Payment succesful")
+      Swal.fire({
+          title: "😊",
+          text: "Proceeding to payment !"
+        });
+      
+      clearCart()
+      window.open("https://dashboard.stripe.com/test/payment-links/create?verify_email=true")
+  
+      Swal.fire({
+        text: "Payment succesful!",
+        icon: "success"
+      });
+
+    try {
+      for (const item of cartItems) {
+        await createOrder({
+          user_id: userId,
+          product_id: item.product_id,
+          brand: item.brand, // Assuming product name is stored in brand
+          quantity: item.quantity,
+          weight: item.weight,
+          price: parseFloat(item.price) * item.quantity,
+        });
+    
+     //  Reducing Stock in Product Collection
+     await updateStockMutation.mutateAsync({
+      productId: item.product_id,
+      quantityOrdered: item.quantity,
+    });
+    console.log(` Stock updated for ${item.brand}`);
+  
+  }
+      alert(" Order placed successfully!");
+    } catch (error) {
+      alert(" Failed to place order. Please try again.");
+    }
+    navigate("/delivery")
 
   };
 
   console.log("cart items", cartItems)
+
+  if (!user) {
+    return (
+      <ErrorPage />
+    )
+  }
+
+
   if (isLoading) return <CircularProgress />;
 
   return (
@@ -89,8 +147,8 @@ const handleDecrease = (itemId,quantity) => {
 
       {
         cartItems?.length === 0 ? (
-          <Box sx={{ justifyContent: "center", justifyItems: "center", padding: "10px" }}>
-            <Typography variant="h6">Your Cart is empty</Typography>
+          <Box sx={{ justifyContent: "center", justifyItems: "center", padding: "10px",paddingBottom:"195px" ,paddingTop:"195px"}}>
+            <Typography variant="h6">Your Cart is empty 😔!</Typography>
           </Box>
         ) :
           <Box>
@@ -115,13 +173,16 @@ const handleDecrease = (itemId,quantity) => {
                     <Typography variant="body1" color="text.secondary">
                       Price: ${item.price}
                     </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      Weight: ${item.weight}
+                    </Typography>
                   </CardContent>
 
                   {/* Remove Button */}
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  <Button variant="contained" color="" size="small" onClick={()=>handleDecrease(item?.$id,item?.quantity)}>-</Button>
+                    <Button variant="contained" color="" size="small" onClick={() => handleDecrease(item?.$id, item?.quantity)}>-</Button>
                     <Typography variant="body2">Qty: {item.quantity}</Typography>
-                    <Button variant="contained" color="" size="small" onClick={()=>handleIncrease(item?.$id,item?.quantity)}>+</Button>
+                    <Button variant="contained" color="" size="small" onClick={() => handleIncrease(item?.$id, item?.quantity)}>+</Button>
                     <Button
                       sx={{
                         background: "linear-gradient(135deg,rgb(190, 73, 73) 0%,rgb(138, 11, 11) 100%)", // Gradient
@@ -148,7 +209,7 @@ const handleDecrease = (itemId,quantity) => {
               ))}
             </List>
             {/* //check out button */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3, p: 2, borderTop: "1px solid #ddd" }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3, p: 2, borderTop: "1px solid #ddd" ,paddingBottom:"200px"}}>
               <Typography variant="h6">Total: ${totalPrice?.toFixed(2)}</Typography>
               <Button
                 variant="contained"
@@ -167,7 +228,7 @@ const handleDecrease = (itemId,quantity) => {
                     boxShadow: "0px 6px 15px rgba(230, 100, 101, 0.5)", // Stronger shadow
                   },
                 }}
-                onClick={handleCheckout}
+                onClick={() => handleCheckout(cartItems, user?.$id)}
               >
                 Checkout
               </Button>

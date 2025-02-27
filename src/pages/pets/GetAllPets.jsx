@@ -76,7 +76,7 @@ if(isLoading){
               flexDirection: "column",
               justifyContent: "center",
               textAlign: { xs: "center", md: "left" },
-              px: { xs: 1, md: 3 }, // Adjust padding based on screen size
+              px: { xs: 1, md: 3 }, // Adjusting padding based on screen size
             }}
           >
             <Typography variant="h6" fontWeight="bold" sx={{ color: "rgb(63, 57, 113)" }}>

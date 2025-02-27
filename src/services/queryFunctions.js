@@ -2,6 +2,7 @@
 import { database,account  } from "../appwriteConf/appwriteConfig"; // Import Appwrite config
 import { ID} from "appwrite";
 import { Query } from 'appwrite'
+import Swal from "sweetalert2";
 //all pets
 export const fetchAllPets = async () => {
   const response = await fetch(`https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID}/documents`, {
@@ -33,7 +34,7 @@ export const fetchAllProducts = async () => {
 }
 
 
-//fetch all product by id
+//fetching all product by id
 
 export const fetchProductById = async (proId) => {
   try {
@@ -54,6 +55,7 @@ export const fetchProductById = async (proId) => {
       const errorData = await response.json();
       console.error("Error fetching product:", errorData);
       throw new Error(errorData.message || "Failed to fetch document");
+    
     }
 
     const respJson = await response.json();
@@ -62,14 +64,14 @@ export const fetchProductById = async (proId) => {
 
   } catch (error) {
     console.error("Fetch Product Error:", error);
-    throw error;
+    // throw error;
   }
 };
 
 
 
 
-//fetch pet details based on category
+//fetching pet details based on category
 
 export const petDetails = async () => {
   try {
@@ -126,10 +128,10 @@ export const postAdoption = async (data) => {
       body: JSON.stringify({
         documentId: ID.unique(),
         data: {
-          fullname: data.fullname || "", //Ensure fullname is included
-          email: data.email || "", // Ensure user email is included
+          fullname: data.fullname || "", //Ensuring fullname is included
+          email: data.email || "", // Ensuring user email is included
           phone:data.phone,
-          petid: data.petid|| "", // Ensure petType is included
+          petid: data.petid|| "", // Ensuring petType is included
           address:data.address,
           desc:data.desc,
           agree:data.agree,
@@ -145,9 +147,9 @@ export const postAdoption = async (data) => {
       throw new Error(errorData.message || "Failed to submit data");
     }
     console.log("application data",response.json())
-    // return response.json(); // Return success response
+    // return response.json(); // Returning success response
   } catch (error) {
-    console.error("Appwrite Error:", error);  //  Log full error
+    console.error("Appwrite Error:", error);  //  Logging full error
     alert(`Error: ${error.message}`);
   }
 }
@@ -248,5 +250,98 @@ export const fetchApplicationsByEmail = async (email) => {
     return resJson?.documents
   } catch (error) {
     console.log("error in fetching pet details", error)
+  }
+}
+
+
+
+
+// service application
+
+export const postService = async (data) => {
+  try {
+   
+    const response = await fetch(`https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_VET_COLLECTION_ID}/documents`, {
+      method: "Post",
+      headers: {
+        "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
+        "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        documentId: ID.unique(),
+        data: {
+          name: data.name || "", 
+          email: data.email || "", 
+          date:data.date,
+          service:data.service.join(", "),
+          userid:data.userid,
+          status:data.status,
+        },
+        permissions: ["read(\"any\")"], 
+      }),
+
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to submit data");
+    }
+    console.log("application data",response.json())
+    // return response.json(); // Return success response
+  } catch (error) {
+    console.error("Appwrite Error:", error);  //  Log full error
+    alert(`Error: ${error.message}`);
+  }
+}
+
+// vet application status admin
+
+export const updateVetApplicationStatus = async ({ id, status }) => {
+  const res = await fetch(
+    `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_VET_COLLECTION_ID}/documents/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
+        "X-Appwrite-Key":  process.env.REACT_APP_APPWRITE_API_KEY,
+      },
+      body: JSON.stringify({
+        data: {
+          status: status, // Status should be inside 'data'
+        }
+      }),
+    }
+  );
+
+  const data = await res.json();
+  console.log("API Response:", data);
+
+  if (!res.ok) {
+    throw new Error(`Failed to update status: ${data.message || "Unknown error"}`);
+  }
+
+  return data;
+};
+
+// fetching service application 
+export const fetchServiceApplications = async () => {
+  try {
+    const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_VET_COLLECTION_ID}/documents`;
+    console.log("application detail api", apiUrl)
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
+        "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
+        "Content-Type": "application/json",
+      },
+    })
+    const resJson = await response.json()
+    console.log("pet service details", resJson)
+    return resJson?.documents
+  } catch (error) {
+    console.log("error in fetching pet service  details", error)
   }
 }

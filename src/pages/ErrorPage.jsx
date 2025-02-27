@@ -16,23 +16,15 @@ const ErrorPage = () => {
           textAlign: "center",
         }}
       >
-        <Typography variant="h2" fontWeight="bold" color="error" sx={{ mb: 2 }}>
+        {/* <Typography variant="h2" fontWeight="bold" color="error" sx={{ mb: 2 }}>
           404
-        </Typography>
+        </Typography> */}
         <Typography variant="h5" sx={{ mb: 2, color: "gray" }}>
-          Oops! The page you are looking for does not exist.
+          Oops! Unauthorized access denied
         </Typography>
         <Typography variant="body1" sx={{ mb: 3, color: "gray" }}>
-          The link might be broken or the page may have been removed.
+          Please Login 
         </Typography>
-
-        {/* Illustration (Optional) */}
-        <img
-          src="https://cdn.dribbble.com/users/1138875/screenshots/4669703/404_animation.gif"
-          alt="Error"
-          style={{ maxWidth: "80%", height: "auto", marginBottom: "20px" }}
-        />
-
         <Button
           variant="contained"
           sx={{
@@ -47,10 +39,18 @@ const ErrorPage = () => {
               background: "linear-gradient(135deg, #e66465 0%, #9198e5 100%)",
             },
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/login")}
         >
-          Go Back Home
+          Go To Login
         </Button>
+        {/* Illustration (Optional) */}
+        <img
+          src="https://cdn.dribbble.com/users/1138875/screenshots/4669703/404_animation.gif"
+          alt="Error"
+          style={{ maxWidth: "80%", height: "auto", marginBottom: "20px" }}
+        />
+
+        
       </Box>
     </Container>
   );

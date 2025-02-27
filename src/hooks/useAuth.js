@@ -3,7 +3,9 @@ import { account } from "../appwriteConf/appwriteConfig";
 
 const fetchUser = async () => {
   try {
-    return await account.get(); // Fetch the logged-in user
+    const user= await account.get();
+    window.sessionStorage.setItem("token",user?.$id)
+    return user// Fetch the logged-in user
   } catch (error) {
     return null; // Return null if not logged in
   }

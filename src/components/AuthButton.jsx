@@ -1,14 +1,14 @@
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useAuth } from "../hooks/useAuth";
 import { Button, CircularProgress, Box } from "@mui/material";
 import { useLogout } from "../hooks/useLogout";
-
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const AuthButton = () => {
-
+const navigate=useNavigate()
     const { data: user, isLoading } = useAuth();
     const { mutate: login, isLoading: isLoggingIn } = useLogin();
     const { mutate: logout, isLoading: isLoggingOut } = useLogout();
@@ -25,6 +25,8 @@ const AuthButton = () => {
     // Handle logout
     const handleLogout = () => {
         logout();
+        window.sessionStorage.removeItem("token")
+        navigate("/")
     };
     // Show loading while checking auth status
     if (isLoading) return <CircularProgress size={24} />;
@@ -47,7 +49,7 @@ const AuthButton = () => {
                     // Show Logout Button when user is logged in
                  
                   
-                    <Button  color="error" onClick={handleLogout} disabled={isLoggingOut}>
+                    <Button  color="inherit" onClick={handleLogout} disabled={isLoggingOut}>
                        <strong> {isLoggingOut ? <CircularProgress size={24} /> : "Logout"}</strong>
                     </Button>
                     

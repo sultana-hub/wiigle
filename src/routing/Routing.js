@@ -1,48 +1,75 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from '../pages/Home'
-// import Cart from '../components/cart/Cart'
-
+import { Suspense, lazy } from 'react'
 import Header from '../layout/Header'
 import Footer from '../layout/Footer'
 import LogIn from '../pages/LogIn'
 import SignUp from '../pages/SignUp'
-import Cart from '../pages/Cart'
+import Cart from '../pages/cart/Cart'
 import GetAllPets from '../pages/pets/GetAllPets'
 import Products from '../pages/products/Products'
 import Profile from '../pages/Profile'
 import SingleProd from '../pages/products/Single/SingleProd'
-import VetService from '../pages/VetService'
+import VetService from '../pages/vetServices/VetService'
 import PetDetails from '../pages/pets/petDetails/PetDetails'
 import Adopt from '../pages/pets/petDetails/adopt/Adopt'
-import Admin from '../pages/pets/admin/Admin'
-import ErrorPage from '../pages/ErrorPage'
+import Admin from '../pages/admin/Admin'
+import AboutUs from '../pages/AboutUs'
+// import ErrorPage from '../pages/ErrorPage'
+import ProtectedRoute from './isAuth'
 import NotFound from '../pages/NotFound'
-
+import GeneralCheckUp from '../pages/vetServices/generalCheckUp/GeneralCheckUp'
+import Vaccination from '../pages/vetServices/vaccine/Vaccination'
+import Grooming from '../pages/vetServices/grooming/Grooming'
+import Emergency from '../pages/vetServices/emergency/Emergency'
+import TakeAppointment from '../pages/vetServices/TakeAppoinment'
+import DeliveryStatus from '../pages/cart/DeliveryStatus'
+import OrderHistory from '../pages/cart/OrderHistory'
+const ErrorPage=lazy(()=>{
+  return new Promise((resolve)=>{
+    setTimeout(()=>resolve(import('../pages/ErrorPage')))
+  },2000)
+})
 
 const Routing = () => {
 
   return (
     <div>
       <Router>
-        <Header/>
+        <Header />
+        <Suspense fallback={
+          <h3>
+            ...Loading
+          </h3>
+        }>
         <Routes>
           <Route path="" element={<Home />} />
-          <Route path="error"element={<ErrorPage/>}/>
-          <Route path="signup" element={<SignUp/>} />
-           <Route path="login" element={<LogIn />} /> 
-           <Route path="profile" element={<Profile/>} /> 
-           <Route path="cart" element={<Cart/>} />
-          <Route path="pet" element={<GetAllPets />} />
-          <Route path="admin" element={<Admin />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="login" element={<LogIn />} />
+          <Route path="product" element={<Products />} />
           <Route path="pet_details" element={<PetDetails />} />
-          <Route path="pet_details/adopt/:id" element={<Adopt/>}/>
-           <Route path="product" element={<Products />} />
-           <Route path="product/single/:id" element={<SingleProd />} />
-           <Route path="vet" element={<VetService/>} />
-           <Route path="*" element={<NotFound/>}/> 
+          <Route path="pet" element={<GetAllPets />} />
+          <Route path="vet" element={<VetService />} />
+          <Route path="general-checkup" element={<GeneralCheckUp/>}/>
+          <Route path="vaccine" element={<Vaccination/>}/>
+          <Route path="grooming" element={<Grooming/>}/>
+          <Route path="emergency" element={<Emergency/>}/>
+          <Route path="about" element={<AboutUs/>}/>
+          {/* protected route */}
+          <Route element={<ProtectedRoute/>}/>
+          <Route path="vet-service" element={<TakeAppointment/>}/>
+          <Route path="product/single/:id" element={<SingleProd />} />
+          <Route path="error" element={<ErrorPage />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="delivery" element={<DeliveryStatus />} />
+          <Route path="user-order" element={<OrderHistory />} />
+          <Route path="admin" element={<Admin />} />
+          <Route path="pet_details/adopt/:id" element={<Adopt />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-       
-        <Footer/>
+      </Suspense>
+        <Footer />
       </Router>
     </div>
   )

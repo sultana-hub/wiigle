@@ -2,7 +2,9 @@ import React from "react";
 import { Button } from "@mui/material";
 import { useCart } from "../hooks/cartHooks/useCart";
 import { useNavigate } from "react-router-dom";
-const AddToCartButton = ({ user_id, product_id, brand, price, image }) => {
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from 'material-react-toastify';
+const AddToCartButton = ({ user_id, product_id, brand, price, image,weight }) => {
 
   const  navigate=useNavigate()
 
@@ -11,18 +13,30 @@ const AddToCartButton = ({ user_id, product_id, brand, price, image }) => {
   console.log("add mutation", addMutation)
 
   const handleAddToCart = async () => {
-    console.log("User ID:", user_id);
-    console.log("Product ID:", product_id);
+    // console.log("User ID:", user_id);
+    // console.log("Product ID:", product_id);
 
     if (!user_id || !product_id) {
-      console.error("Error: Missing userId or productId", { user_id, product_id });
-      alert("Error: User ID or Product ID is missing.");
+      // console.error("Error: Missing userId or productId", { user_id, product_id });
+      // alert("Error: User ID or Product ID is missing.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please Login First!",
+        footer: '<a href="/login">Please Login</a>'
+      });
       return;
     }
 
     try {
-      await addMutation.mutateAsync({ user_id: user_id, product_id: product_id, image: image, brand: brand, price: price, quantity: 1 });
-      alert("Item added to cart!");
+      await addMutation.mutateAsync({ user_id: user_id, product_id: product_id, image: image, brand: brand, price: price,weight:weight, quantity: 1 });
+      Swal.fire({
+        icon: "success",
+        title: "Good Job",
+        text: "Item added to cart!",
+       
+      });
+      // toast.success('Item added to cart 😊')
       navigate("/cart")
     } catch (error) {
       console.error("Failed to add item:", error);

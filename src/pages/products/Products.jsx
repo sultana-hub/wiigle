@@ -84,7 +84,8 @@ const Products = () => {
                   sx={{ borderRadius: "10px 10px 0 0" }}
                 />
                 <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h6">{item.food}</Typography>
+                  <Typography variant="h6">{item.product_brand}</Typography>
+                  <Typography variant="h6">Stock:{item.quantity}</Typography>
                   <Button
                     variant="contained"
                     sx={{
