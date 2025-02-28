@@ -16,17 +16,17 @@ import {
   Grid,
   Chip,
 } from "@mui/material";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "../hooks/useLogout";
-import { database } from "../../src/appwriteConf/appwriteConfig";
+import { useLogout } from "../../hooks/useLogout";
+import { database } from "../../appwriteConf/appwriteConfig";
 import { Query } from "appwrite";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
-import DeliveryStatus from "./cart/DeliveryStatus";
-import OrderHistory from "./cart/OrderHistory";
-import ErrorPage from "./ErrorPage";
-import {getUserOrders} from '../services/cartQueryFunction'
+import DeliveryStatus from "../cart/DeliveryStatus";
+import OrderHistory from "../cart/OrderHistory";
+import ErrorPage from "../ui/ErrorPage";
+import {getUserOrders} from '../../services/cartQueryFunction'
 import { useQuery } from "react-query";
 const Profile = () => {
   const navigate = useNavigate();

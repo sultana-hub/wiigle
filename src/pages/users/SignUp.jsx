@@ -13,9 +13,9 @@ import {
   InputAdornment
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { account } from "../../src/appwriteConf/appwriteConfig";
+import { account } from "../../appwriteConf/appwriteConfig";
 import { ID } from "appwrite";
-import SuccessToast from "../components/SuccessToast";
+import SuccessToast from "../../components/SuccessToast";
 import Swal from "sweetalert2";
 const SignUp = () => {
   const navigate = useNavigate();

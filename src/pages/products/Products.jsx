@@ -7,10 +7,11 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
 // import { Typography, Button } from '@mui/material';
 // import { useAuth } from "../../hooks/useAuth";
-import { Box,  Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
+import { Box,  Typography, Button, Card, CardMedia, CardContent ,List ,TextField} from "@mui/material";
 import Search from '../../components/Search';
 import { useAddToCart } from "../../hooks/cartHooks/useAddToCart";
 import { useNavigate } from 'react-router-dom';
+import Review from '../users/Review';
 //filter logic
 const filterData = (query, data) => {
     if (!query) {
@@ -44,6 +45,12 @@ const Products = () => {
 
         }),
     }));
+
+const handleSubmit=()=>{
+
+}
+
+
     if (productsLoading) {
         return (<p>...Loading</p>)
     }
@@ -55,10 +62,8 @@ const Products = () => {
   
 
     return (
-        <>
-      
-       
-        <Box sx={{ flexGrow: 1, mb: 10, px: 2 }}> 
+        <> 
+        <Box sx={{ flexGrow: 1, mb: 5, px: 2 }}> 
         {/* Search Bar */}
         <Typography variant="h6" sx={{ mt: 3, mb: 5, textAlign: "center" }}>
           <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -105,6 +110,11 @@ const Products = () => {
           ))}
         </Grid>
       </Box>
+ {/* Review Section */}
+
+ <Review/>
+      
+
       </>
     )
 }

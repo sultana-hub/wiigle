@@ -9,7 +9,7 @@ import { useMutation } from "react-query";
 import { useAuth } from "../../hooks/useAuth";
 import { postService } from "../../services/queryFunctions";
 import { useNavigate } from "react-router-dom";
-import ErrorPage from "../ErrorPage";
+import ErrorPage from "../ui/ErrorPage";
 import Swal from "sweetalert2";
 const availableServices = [
   "General Checkup",

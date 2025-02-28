@@ -345,3 +345,36 @@ export const fetchServiceApplications = async () => {
     console.log("error in fetching pet service  details", error)
   }
 }
+
+
+// Review section
+export const fetchReviews = async () => {
+  try{
+    const response = await database.listDocuments(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+      process.env.REACT_APP_APPWRITE_REVIEW_COLLECTION_ID);
+      console.log("review fetch",response)
+   return response.documents;
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    throw new Error(error.message);
+  }
+
+};
+
+export const addReview = async (review) => {
+  try{
+  const response=  await database.createDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+     process.env.REACT_APP_APPWRITE_REVIEW_COLLECTION_ID, "unique()", review);
+     console.log("add reveiw",response)
+     return response.documents
+  }catch (error) {
+    console.error("Error adding review:", error);
+    throw new Error(error.message);
+  }
+ 
+};
+
+export const deleteReview = async (reviewId) => {
+  return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+     process.env.REACT_APP_APPWRITE_REVIEW_COLLECTION_ID, reviewId);
+};

@@ -38,7 +38,7 @@ const AboutUs = () => {
 
         {/* Meet Our Team */}
         <Typography variant="h4" fontWeight="bold" align="center" mb={3}>
-          Meet Our Team
+           Our Core Members
         </Typography>
         <Grid container spacing={3} justifyContent="center">
           {[

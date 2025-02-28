@@ -1,26 +1,129 @@
 
 
+// import React, { useState } from "react";
+// import { AppBar, Toolbar, Typography, Container, Button, Box, IconButton, Drawer, List, ListItem, ListItemText,Badge } from "@mui/material";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import { Link } from "react-router-dom";
+// import { useAuth } from "../hooks/useAuth";
+// import { useTheme } from "@mui/material/styles";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+// import AuthButton from "../components/AuthButton";
+// import {fetchCartItems} from '../services/cartQueryFunction'
+// import { useQuery } from "react-query";
+
+// const Header = () => {
+//   const { data: user } = useAuth();
+
+//   const { data: cartItems = [] } = useQuery(["cartItems",user?.$id],()=> fetchCartItems(user?.$id), {
+//     enabled: !!user?.$id,
+//     refetchOnWindowFocus: true, // Ensures data stays updated
+// });
+// console.log("cart items at header",cartItems)
+// console.log("no of items in cart header",cartItems?.length)
+//   const theme = useTheme();
+//   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+//   const [drawerOpen, setDrawerOpen] = useState(false);
+
+//   const toggleDrawer = (open) => () => {
+//     setDrawerOpen(open);
+//   };
+
+//   const navLinks = [
+//     { label: "Products", path: "/product" },
+//     { label: "Vet Service", path: "/vet" },
+//    !user?.$id && { label: "Register", path: "/signup" },
+//     user?.email!=="yahya@gmail.com"  && { label: "Profile", path: "/profile" },
+//     user?.email === "yahya@gmail.com" && { label: "Dashboard", path: "/admin" },
+//   ].filter(Boolean);
+
+//   return (
+//     <AppBar
+//       position="static"
+//       sx={{
+//         background: "linear-gradient(45deg, #1E3C72 30%, #2A5298 90%)",
+//         color: "white",
+//       }}
+//     >
+//       <Container maxWidth="xl">
+//         <Toolbar>
+//           {isMobile ? (
+//             <>
+//               <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
+//                 <MenuIcon />
+//               </IconButton>
+//               <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+//                 <List>
+//                   {navLinks.map((item, index) => (
+//                     <ListItem button key={index} component={Link} to={item.path} onClick={toggleDrawer(false)}>
+//                       <ListItemText primary={item.label} />
+//                     </ListItem>
+//                   ))}
+//                 </List>
+//               </Drawer>
+//             </>
+//           ) : (
+//             <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+//                <img src="../../assets/favicon.ico" alt="logo" height={60} width={70} style={{ marginRight: 10 }} />
+//               <Typography
+//                 variant="h6"
+//                 component={Link}
+//                 to="/"
+//                 sx={{ textDecoration: "none", color: "white", fontWeight: "bold" }}
+//               >
+//                 WiggleWag
+//               </Typography>
+//             </Box>
+//           )}
+
+//           {!isMobile &&
+//             navLinks.map((item, index) => (
+//               <Button key={index} color="inherit" component={Link} to={item.path} sx={{ mx: 1 }}>
+//                 {item.label}
+//               </Button>
+//             ))}
+
+//           <AuthButton />
+//          {
+//           user?.email!=="yahya@gmail.com" &&
+//           <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
+//           <Badge badgeContent={cartItems?.length} color="error">
+//             <ShoppingCartIcon />
+//             </Badge>
+//           </IconButton>
+//          }
+         
+//         </Toolbar>
+//       </Container>
+//     </AppBar>
+//   );
+// };
+
+// export default Header;
+
+
+
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Container, Button, Box, IconButton, Drawer, List, ListItem, ListItemText,Badge } from "@mui/material";
+import { AppBar, Toolbar, Typography, Container, Button, Box, IconButton, Drawer, List, ListItem, ListItemText, Badge } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AuthButton from "../components/AuthButton";
-import {fetchCartItems} from '../services/cartQueryFunction'
+import { fetchCartItems } from "../services/cartQueryFunction";
 import { useQuery } from "react-query";
 
 const Header = () => {
   const { data: user } = useAuth();
+  const location = useLocation();
 
-  const { data: cartItems = [] } = useQuery(["cartItems",user?.$id],()=> fetchCartItems(user?.$id), {
+  const { data: cartItems = [] } = useQuery(["cartItems", user?.$id], () => fetchCartItems(user?.$id), {
     enabled: !!user?.$id,
-    refetchOnWindowFocus: true, // Ensures data stays updated
-});
-console.log("cart items at header",cartItems)
-console.log("no of items in cart header",cartItems?.length)
+    refetchOnWindowFocus: true,
+  });
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -32,8 +135,8 @@ console.log("no of items in cart header",cartItems?.length)
   const navLinks = [
     { label: "Products", path: "/product" },
     { label: "Vet Service", path: "/vet" },
-   !user?.$id && { label: "Register", path: "/signup" },
-    user?.email!=="yahya@gmail.com"  && { label: "Profile", path: "/profile" },
+    !user?.$id && { label: "Register", path: "/signup" },
+    user?.email !== "yahya@gmail.com" && { label: "Profile", path: "/profile" },
     user?.email === "yahya@gmail.com" && { label: "Dashboard", path: "/admin" },
   ].filter(Boolean);
 
@@ -55,7 +158,17 @@ console.log("no of items in cart header",cartItems?.length)
               <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
                 <List>
                   {navLinks.map((item, index) => (
-                    <ListItem button key={index} component={Link} to={item.path} onClick={toggleDrawer(false)}>
+                    <ListItem
+                      button
+                      key={index}
+                      component={Link}
+                      to={item.path}
+                      onClick={toggleDrawer(false)}
+                      selected={location.pathname === item.path}
+                      sx={{
+                        "&.Mui-selected": { backgroundColor: "rgba(30, 60, 114, 0.2)" },
+                      }}
+                    >
                       <ListItemText primary={item.label} />
                     </ListItem>
                   ))}
@@ -64,12 +177,14 @@ console.log("no of items in cart header",cartItems?.length)
             </>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-               <img src="../../assets/favicon.ico" alt="logo" height={60} width={70} style={{ marginRight: 10 }} />
+              <img src="../../assets/favicon.ico" alt="logo" height={60} width={70} style={{ marginRight: 10 }} />
               <Typography
                 variant="h6"
                 component={Link}
                 to="/"
-                sx={{ textDecoration: "none", color: "white", fontWeight: "bold" }}
+                sx={{ textDecoration: "none", color: "white", 
+                  fontWeight: "bold",mx:1,
+                  border:location.pathname==="/"?"2px solid blue":"none" }}
               >
                 WiggleWag
               </Typography>
@@ -78,21 +193,28 @@ console.log("no of items in cart header",cartItems?.length)
 
           {!isMobile &&
             navLinks.map((item, index) => (
-              <Button key={index} color="inherit" component={Link} to={item.path} sx={{ mx: 1 }}>
+              <Button
+                key={index}
+                color="inherit"
+                component={Link}
+                to={item.path}
+                sx={{
+                  mx: 1,
+                  border: location.pathname === item.path ? "2px solid blue" : "none",
+                }}
+              >
                 {item.label}
               </Button>
             ))}
 
           <AuthButton />
-         {
-          user?.email!=="yahya@gmail.com" &&
-          <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
-          <Badge badgeContent={cartItems?.length} color="error">
-            <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
-         }
-         
+          {user?.email !== "yahya@gmail.com" && (
+            <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
+              <Badge badgeContent={cartItems?.length} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
@@ -100,4 +222,5 @@ console.log("no of items in cart header",cartItems?.length)
 };
 
 export default Header;
+
 

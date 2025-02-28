@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
-import ErrorPage from "../../../ErrorPage";
+import ErrorPage from "../../../ui/ErrorPage";
 import {
   Container,
   TextField,

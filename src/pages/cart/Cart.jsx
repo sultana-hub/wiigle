@@ -16,7 +16,7 @@ import { ToastContainer, toast } from 'material-react-toastify';
 import { useNavigate } from "react-router-dom";
 import { createOrder } from "../../services/cartQueryFunction";
 import {useUpdateStock} from '../../hooks/cartHooks/useUpdateStock'
-import ErrorPage from "../ErrorPage";
+import ErrorPage from "../ui/ErrorPage";
 const Cart = () => {
   const navigate=useNavigate()
     // const { data: user } = useAuth()
@@ -63,12 +63,12 @@ console.log("cart item",cartItems)
   //remove from cart
   const { mutate } = useMutation(removeFromCart, {
     onSuccess: () => {
-      alert("Item deleted 😔!")
-      // Swal.fire({
-      //   title: "😔!",
-      //   text: "Item deleted!"
-      // });
-      // toast.success('Item deleted');
+      // alert("Item deleted 😔!")
+      Swal.fire({
+        title: "😔!",
+        text: "Item deleted!"
+      });
+      toast.success('Item deleted');
     },
     onError: () => console.log("error in delete")
   })
@@ -123,7 +123,11 @@ console.log("cart item",cartItems)
     console.log(` Stock updated for ${item.brand}`);
   
   }
-      alert(" Order placed successfully!");
+      // alert(" Order placed successfully!");
+      Swal.fire({
+        title: "😊",
+        text: "Order placed successfully !"
+      });
     } catch (error) {
       alert(" Failed to place order. Please try again.");
     }
