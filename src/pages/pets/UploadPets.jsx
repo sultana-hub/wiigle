@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { database, storage } from "../../appwriteConf/appwriteConfig";
+// import { database, storage } from "../../appwriteConf/appwriteConfig";
 import { useMutation, useQueryClient } from "react-query";
-import { ID } from "appwrite";
+// import { ID } from "appwrite";
 import { Container, TextField, Button, Typography, Box, CircularProgress, Alert } from "@mui/material";
-
+import {uploadPetData} from '../../services/queryFunctions'
 const UploadPets = () => {
   const queryClient = useQueryClient();
   const [petData, setPetData] = useState({ petid: "", category: "", desc: "" });
@@ -21,24 +21,8 @@ const UploadPets = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const uploadPetMutation = useMutation(
-    async () => {
-      if (!image) throw new Error("Please select an image");
-
-      const file = await storage.createFile(
-        process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID,
-        ID.unique(),
-        image
-      );
-      const imageId = file.$id;
-
-      await database.createDocument(
-        process.env.REACT_APP_APPWRITE_DATABASE_ID,
-        process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID,
-        ID.unique(),
-        { ...petData, imageId }
-      );
-    },
+  const uploadPetMutation = useMutation(()=>uploadPetData(image,petData)
+    ,
     {
       onSuccess: () => {
         queryClient.invalidateQueries(process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID);

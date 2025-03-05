@@ -1,108 +1,4 @@
 
-
-// import React, { useState } from "react";
-// import { AppBar, Toolbar, Typography, Container, Button, Box, IconButton, Drawer, List, ListItem, ListItemText,Badge } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-// import { Link } from "react-router-dom";
-// import { useAuth } from "../hooks/useAuth";
-// import { useTheme } from "@mui/material/styles";
-// import useMediaQuery from "@mui/material/useMediaQuery";
-// import AuthButton from "../components/AuthButton";
-// import {fetchCartItems} from '../services/cartQueryFunction'
-// import { useQuery } from "react-query";
-
-// const Header = () => {
-//   const { data: user } = useAuth();
-
-//   const { data: cartItems = [] } = useQuery(["cartItems",user?.$id],()=> fetchCartItems(user?.$id), {
-//     enabled: !!user?.$id,
-//     refetchOnWindowFocus: true, // Ensures data stays updated
-// });
-// console.log("cart items at header",cartItems)
-// console.log("no of items in cart header",cartItems?.length)
-//   const theme = useTheme();
-//   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-//   const [drawerOpen, setDrawerOpen] = useState(false);
-
-//   const toggleDrawer = (open) => () => {
-//     setDrawerOpen(open);
-//   };
-
-//   const navLinks = [
-//     { label: "Products", path: "/product" },
-//     { label: "Vet Service", path: "/vet" },
-//    !user?.$id && { label: "Register", path: "/signup" },
-//     user?.email!=="yahya@gmail.com"  && { label: "Profile", path: "/profile" },
-//     user?.email === "yahya@gmail.com" && { label: "Dashboard", path: "/admin" },
-//   ].filter(Boolean);
-
-//   return (
-//     <AppBar
-//       position="static"
-//       sx={{
-//         background: "linear-gradient(45deg, #1E3C72 30%, #2A5298 90%)",
-//         color: "white",
-//       }}
-//     >
-//       <Container maxWidth="xl">
-//         <Toolbar>
-//           {isMobile ? (
-//             <>
-//               <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
-//                 <MenuIcon />
-//               </IconButton>
-//               <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-//                 <List>
-//                   {navLinks.map((item, index) => (
-//                     <ListItem button key={index} component={Link} to={item.path} onClick={toggleDrawer(false)}>
-//                       <ListItemText primary={item.label} />
-//                     </ListItem>
-//                   ))}
-//                 </List>
-//               </Drawer>
-//             </>
-//           ) : (
-//             <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-//                <img src="../../assets/favicon.ico" alt="logo" height={60} width={70} style={{ marginRight: 10 }} />
-//               <Typography
-//                 variant="h6"
-//                 component={Link}
-//                 to="/"
-//                 sx={{ textDecoration: "none", color: "white", fontWeight: "bold" }}
-//               >
-//                 WiggleWag
-//               </Typography>
-//             </Box>
-//           )}
-
-//           {!isMobile &&
-//             navLinks.map((item, index) => (
-//               <Button key={index} color="inherit" component={Link} to={item.path} sx={{ mx: 1 }}>
-//                 {item.label}
-//               </Button>
-//             ))}
-
-//           <AuthButton />
-//          {
-//           user?.email!=="yahya@gmail.com" &&
-//           <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
-//           <Badge badgeContent={cartItems?.length} color="error">
-//             <ShoppingCartIcon />
-//             </Badge>
-//           </IconButton>
-//          }
-         
-//         </Toolbar>
-//       </Container>
-//     </AppBar>
-//   );
-// };
-
-// export default Header;
-
-
-
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Container, Button, Box, IconButton, Drawer, List, ListItem, ListItemText, Badge } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -118,7 +14,7 @@ import { useQuery } from "react-query";
 const Header = () => {
   const { data: user } = useAuth();
   const location = useLocation();
-
+   const adimEmail="yahya@gmail.com"
   const { data: cartItems = [] } = useQuery(["cartItems", user?.$id], () => fetchCartItems(user?.$id), {
     enabled: !!user?.$id,
     refetchOnWindowFocus: true,
@@ -129,15 +25,17 @@ const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
+    setDrawerOpen(open);  
   };
-
+ 
   const navLinks = [
     { label: "Products", path: "/product" },
-    { label: "Vet Service", path: "/vet" },
+    user?.email!== adimEmail  && { label: "Vet Service", path: "/vet" },
     !user?.$id && { label: "Register", path: "/signup" },
-    user?.email !== "yahya@gmail.com" && { label: "Profile", path: "/profile" },
-    user?.email === "yahya@gmail.com" && { label: "Dashboard", path: "/admin" },
+    user?.email!== adimEmail  && { label: "Profile", path: "/profile" },
+    user?.email=== adimEmail  && { label: "Dashboard", path: "/admin" },
+    user?.email===adimEmail && {label:"Upload Pet",path:"/pet_upload"},
+    user?.email===adimEmail && {label:"Upload Products",path:"/products_upload"}
   ].filter(Boolean);
 
   return (

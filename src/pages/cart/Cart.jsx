@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button, CircularProgress, List, ListItem, Typography } from "@mui/material";
 import { fetchCartItems } from '../../services/cartQueryFunction'
 import { useQuery } from "react-query";
-import { account } from "../../appwriteConf/appwriteConfig";
+import { storage } from "../../appwriteConf/appwriteConfig";
 import { removeFromCart } from '../../services/cartQueryFunction'
 import { useMutation, useQueryClient } from "react-query";
 import { Card, CardMedia, CardContent, Box, Container } from "@mui/material";
@@ -38,7 +38,6 @@ console.log("cart item",cartItems)
   // Mutation to update item quantity
   const mutation = useMutation(updateCartItem, {
     onSuccess: () => {
-
       queryClient.invalidateQueries(["cart"]); // Refetching cart data after update
     },
   });
@@ -168,7 +167,7 @@ console.log("cart item",cartItems)
                   {/* Product Image */}
                   <CardMedia
                     component="img"
-                    image={item?.image}
+                    image={item?.imageId ? storage.getFileView(process.env.REACT_APP_APPWRITE_PRODUCTS_IMAGES_STORAGE_ID, item?.imageId) : ""}
                     alt="product"
                     sx={{ width: 80, height: 80, borderRadius: 2 }}
                   />

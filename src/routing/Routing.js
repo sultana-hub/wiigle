@@ -26,6 +26,8 @@ import TakeAppointment from '../pages/vetServices/TakeAppoinment'
 import DeliveryStatus from '../pages/cart/DeliveryStatus'
 import OrderHistory from '../pages/cart/OrderHistory'
 import UploadPets from '../pages/pets/UploadPets'
+import UploadProducts from '../pages/products/UploadProducts'
+import EditSingle from '../pages/products/Single/EditSingle'
 const ErrorPage=lazy(()=>{
   return new Promise((resolve)=>{
     setTimeout(()=>resolve(import('../pages/ui/ErrorPage')))
@@ -60,6 +62,7 @@ const Routing = () => {
           <Route element={<ProtectedRoute/>}/>
           <Route path="vet-service" element={<TakeAppointment/>}/>
           <Route path="product/single/:id" element={<SingleProd />} />
+          <Route path="product/edit/:id" element={<EditSingle />} />
           <Route path="error" element={<ErrorPage />} />
           <Route path="profile" element={<Profile />} />
           <Route path="cart" element={<Cart />} />
@@ -69,6 +72,7 @@ const Routing = () => {
           <Route path="pet_details/adopt/:id" element={<Adopt />} />
           {/* pet upload */}
           <Route path="pet_upload" element={<UploadPets />} />
+          <Route path="products_upload" element={<UploadProducts />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

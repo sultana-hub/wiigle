@@ -2,10 +2,10 @@ import { database } from "../appwriteConf/appwriteConfig";
 import {Query,ID } from 'appwrite'
 
   //Adding to the Cart
-export const addToCart = async ({ user_id, product_id,image,brand,price,quantity,weight }) => {
+export const addToCart = async ({ user_id, product_id,imageId,brand,price,quantity,weight }) => {
   
   try {
-    console.log("Adding to cart with data:", { user_id: user_id, product_id: product_id,image:image ,quantity,weight });
+    console.log("Adding to cart with data:", { user_id: user_id, product_id: product_id,imageId:imageId ,quantity,weight });
     const response = await database.createDocument(
       process.env.REACT_APP_APPWRITE_DATABASE_ID,
       process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID,
@@ -13,7 +13,7 @@ export const addToCart = async ({ user_id, product_id,image,brand,price,quantity
       {
         user_id: user_id, 
         product_id: product_id,
-        image:image, 
+        imageId:imageId, 
         brand:brand,
         price:price,
         quantity: quantity,

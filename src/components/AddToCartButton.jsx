@@ -4,7 +4,7 @@ import { useCart } from "../hooks/cartHooks/useCart";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from 'material-react-toastify';
-const AddToCartButton = ({ user_id, product_id, brand, price, image,weight }) => {
+const AddToCartButton = ({ user_id, product_id, brand, price, imageId,weight }) => {
 
   const  navigate=useNavigate()
 
@@ -29,7 +29,7 @@ const AddToCartButton = ({ user_id, product_id, brand, price, image,weight }) =>
     }
 
     try {
-      await addMutation.mutateAsync({ user_id: user_id, product_id: product_id, image: image, brand: brand, price: price,weight:weight, quantity: 1 });
+      await addMutation.mutateAsync({ user_id: user_id, product_id: product_id, imageId: imageId, brand: brand, price: price,weight:weight, quantity: 1 });
       navigate("/cart")
       // Swal.fire({
       //   icon: "success",
