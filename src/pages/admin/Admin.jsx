@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <Box p={3}>
+    <Box p={3} sx={{paddingBottom:"150px",paddingTop:"150px"}}>
       <Typography variant="h4" textAlign="center" mb={3}>
         Admin Dashboard
       </Typography>

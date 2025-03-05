@@ -70,11 +70,11 @@ export const updateCartItem = async ({ id, quantity }) => {
   });
 };
 
+
+
+
+
 // create order
-
-
-
-
 export const createOrder = async (orderData) => {
   try {
     const response = await database.createDocument(

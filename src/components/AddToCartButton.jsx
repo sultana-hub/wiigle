@@ -30,14 +30,16 @@ const AddToCartButton = ({ user_id, product_id, brand, price, image,weight }) =>
 
     try {
       await addMutation.mutateAsync({ user_id: user_id, product_id: product_id, image: image, brand: brand, price: price,weight:weight, quantity: 1 });
-      Swal.fire({
-        icon: "success",
-        title: "Good Job",
-        text: "Item added to cart!",
-       
-      });
-      // toast.success('Item added to cart 😊')
       navigate("/cart")
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Good Job",
+      //   text: "Item added to cart!",
+       
+      // });
+     alert("Item added to the cart 😊")
+      // toast.success('Item added to cart 😊')
+     
     } catch (error) {
       console.error("Failed to add item:", error);
     }
@@ -70,9 +72,6 @@ const AddToCartButton = ({ user_id, product_id, brand, price, image,weight }) =>
 
         {addMutation.isLoading ? "Adding..." : "Add to Cart"}
       </Button>
-
-
-
 
     </>
   );

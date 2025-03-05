@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { createOrder } from "../../services/cartQueryFunction";
 import {useUpdateStock} from '../../hooks/cartHooks/useUpdateStock'
 import ErrorPage from "../ui/ErrorPage";
+import Alert from '@mui/material/Alert';
 const Cart = () => {
   const navigate=useNavigate()
     // const { data: user } = useAuth()
@@ -63,18 +64,19 @@ console.log("cart item",cartItems)
   //remove from cart
   const { mutate } = useMutation(removeFromCart, {
     onSuccess: () => {
-      // alert("Item deleted 😔!")
-      Swal.fire({
-        title: "😔!",
-        text: "Item deleted!"
-      });
-      toast.success('Item deleted');
+       alert("Item deleted 😔!")
+      // Swal.fire({
+      //   title: "😔!",
+      //   text: "Item deleted!"
+      // });
+      // toast.success('Item deleted');
     },
     onError: () => console.log("error in delete")
   })
   //deleting the cart item
   const onDelete = (itemId) => {
     mutate(itemId)
+
   }
 
   //clearing the cart after checkout 
@@ -175,17 +177,17 @@ console.log("cart item",cartItems)
                   <CardContent sx={{ flex: 1 }}>
                     <Typography variant="h6">{item?.brand}</Typography>
                     <Typography variant="body1" color="text.secondary">
-                      Price: ${item.price}
+                      Price: ${item?.price}
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
-                      Weight: ${item.weight}
+                      Weight: ${item?.weight}
                     </Typography>
                   </CardContent>
 
                   {/* Remove Button */}
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <Button variant="contained" color="" size="small" onClick={() => handleDecrease(item?.$id, item?.quantity)}>-</Button>
-                    <Typography variant="body2">Qty: {item.quantity}</Typography>
+                    <Typography variant="body2">Qty: {item?.quantity}</Typography>
                     <Button variant="contained" color="" size="small" onClick={() => handleIncrease(item?.$id, item?.quantity)}>+</Button>
                     <Button
                       sx={{
@@ -204,7 +206,7 @@ console.log("cart item",cartItems)
                       }}
                       variant="contained"
                       startIcon={<DeleteIcon />}
-                      onClick={() => onDelete(item.$id)}
+                      onClick={() => onDelete(item?.$id)}
                     >
                       Remove
                     </Button>

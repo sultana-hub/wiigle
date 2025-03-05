@@ -25,6 +25,7 @@ import Emergency from '../pages/vetServices/emergency/Emergency'
 import TakeAppointment from '../pages/vetServices/TakeAppoinment'
 import DeliveryStatus from '../pages/cart/DeliveryStatus'
 import OrderHistory from '../pages/cart/OrderHistory'
+import UploadPets from '../pages/pets/UploadPets'
 const ErrorPage=lazy(()=>{
   return new Promise((resolve)=>{
     setTimeout(()=>resolve(import('../pages/ui/ErrorPage')))
@@ -66,6 +67,8 @@ const Routing = () => {
           <Route path="user-order" element={<OrderHistory />} />
           <Route path="admin" element={<Admin />} />
           <Route path="pet_details/adopt/:id" element={<Adopt />} />
+          {/* pet upload */}
+          <Route path="pet_upload" element={<UploadPets />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -1,5 +1,4 @@
 
-
 import React, { useState } from "react";
 import {
   Box,
@@ -14,7 +13,6 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useLogin } from "../../hooks/useLogin";
 import { Link, useNavigate } from "react-router-dom";
-
 const LogIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");

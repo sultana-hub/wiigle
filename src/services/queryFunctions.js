@@ -93,25 +93,8 @@ export const petDetails = async () => {
   }
 }
 
-// export const petDetails = async (category) => {
-//   try {
-//     console.log(" Fetching details for category:", category);
 
-//     const response = await database.listDocuments(
-//       process.env.REACT_APP_APPWRITE_DATABASE_ID,
-//       process.env.process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID,
-//       [
-//         Query.equal("category", category) //  Fetch only category
-//       ]
-//     );
 
-//     console.log(" Fetched pet details:", response.documents);
-//     return response?.documents; //  Return the fetched pets
-//   } catch (error) {
-//     console.error(" Error fetching details items:", error);
-//     return [];
-//   }
-// };
 //  ADOPTION .......................................................................................
 
 export const postAdoption = async (data) => {
@@ -153,33 +136,6 @@ export const postAdoption = async (data) => {
     alert(`Error: ${error.message}`);
   }
 }
-
-// fetch application data
-// export const fetchApplications = async () => {
-//   try {
-//     const response = await fetch(`https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_ADOPTION_COLLECTION_ID}/documents`, {
-//       method: "Get",
-//       headers: {
-//         "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-//         "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
-//          "Authorization": `Bearer ${process.env.REACT_APP_APPWRITE_API_KEY}`,
-//         "Content-Type": "application/json"
-//       },
-
-     
-//     });
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       throw new Error(errorData.message || "Failed to fetch data");
-//     }
-//     return Array.isArray(response.json()) ? response.json() : [];
-   
-//   } catch (error) {
-//     console.error("Appwrite Error:", error);  //  Log full error
-//     alert(`Error: ${error.message}`);
-//   }
-// };
-
 
 export const fetchApplications = async () => {
   try {
@@ -378,3 +334,8 @@ export const deleteReview = async (reviewId) => {
   return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
      process.env.REACT_APP_APPWRITE_REVIEW_COLLECTION_ID, reviewId);
 };
+
+
+
+
+

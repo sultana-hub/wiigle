@@ -46,9 +46,7 @@ const AuthButton = () => {
           color="inherit"
           onClick={handleLogout}
           disabled={isLoggingOut}
-          sx={{
-            border: location.pathname === "/profile" ? "2px solid blue" : "none",
-          }}
+        
         >
           <strong>{isLoggingOut ? <CircularProgress size={24} /> : "Logout"}</strong>
         </Button>

@@ -46,9 +46,7 @@ const Products = () => {
         }),
     }));
 
-const handleSubmit=()=>{
 
-}
 
 
     if (productsLoading) {
