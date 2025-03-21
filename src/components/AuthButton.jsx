@@ -48,7 +48,7 @@ const AuthButton = () => {
           disabled={isLoggingOut}
         
         >
-          <strong>{isLoggingOut ? <CircularProgress size={24} /> : "Logout"}</strong>
+          {isLoggingOut ? <CircularProgress size={24} /> : "Logout"}
         </Button>
       )}
     </>

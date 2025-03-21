@@ -42,7 +42,7 @@ const Header = () => {
     <AppBar
       position="static"
       sx={{
-        background: "linear-gradient(45deg, #1E3C72 30%, #2A5298 90%)",
+        background: "linear-gradient(45deg,#000033 30%,#00004d 90%)",
         color: "white",
       }}
     >
@@ -81,7 +81,7 @@ const Header = () => {
                 component={Link}
                 to="/"
                 sx={{ textDecoration: "none", color: "white", 
-                  fontWeight: "bold",mx:1,
+                  mx:2,
                   border:location.pathname==="/"?"2px solid blue":"none" }}
               >
                 WiggleWag
@@ -97,7 +97,7 @@ const Header = () => {
                 component={Link}
                 to={item.path}
                 sx={{
-                  mx: 1,
+                  mx: 2,
                   border: location.pathname === item.path ? "2px solid blue" : "none",
                 }}
               >
