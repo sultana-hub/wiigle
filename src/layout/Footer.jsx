@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { Container, Typography, Link, Box, IconButton, Grid, Button } from "@mui/material";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
-import TermsAndConditionsModal from "../pages/ui/TermsAndCond";
+import TermsAndConditionsModal from "../pages/TermsAndCond";
 
 const Footer = () => {
   const [open, setOpen] = useState(false);

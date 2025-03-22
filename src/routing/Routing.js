@@ -14,10 +14,10 @@ import VetService from '../pages/vetServices/VetService'
 import PetDetails from '../pages/pets/petDetails/PetDetails'
 import Adopt from '../pages/pets/petDetails/adopt/Adopt'
 import Admin from '../pages/admin/Admin'
-import AboutUs from '../pages/ui/AboutUs'
+import AboutUs from '../pages/AboutUs'
 // import ErrorPage from '../pages/ErrorPage'
 import ProtectedRoute from './isAuth'
-import NotFound from '../pages/ui/NotFound'
+import NotFound from '../pages/NotFound'
 import GeneralCheckUp from '../pages/vetServices/generalCheckUp/GeneralCheckUp'
 import Vaccination from '../pages/vetServices/vaccine/Vaccination'
 import Grooming from '../pages/vetServices/grooming/Grooming'
@@ -31,7 +31,7 @@ import UploadProducts from '../pages/products/UploadProducts'
 import EditSingle from '../pages/products/Single/EditSingle'
 const ErrorPage=lazy(()=>{
   return new Promise((resolve)=>{
-    setTimeout(()=>resolve(import('../pages/ui/ErrorPage')))
+    setTimeout(()=>resolve(import('../pages/ErrorPage')))
   },2000)
 })
 

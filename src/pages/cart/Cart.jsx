@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from "react";
-import { Button, CircularProgress, List, ListItem, Typography } from "@mui/material";
+import React from "react";
+import { Button, CircularProgress, List, Typography } from "@mui/material";
 import { fetchCartItems } from '../../services/cartQueryFunction'
 import { useQuery } from "react-query";
 import { storage } from "../../appwriteConf/appwriteConfig";
@@ -12,12 +12,12 @@ import { database } from "../../appwriteConf/appwriteConfig";
 import { useAuth } from "../../hooks/useAuth";
 import { updateCartItem } from '../../services/cartQueryFunction'
 import Swal from "sweetalert2";
-import { ToastContainer, toast } from 'material-react-toastify';
+// import { ToastContainer, toast } from 'material-react-toastify';
 import { useNavigate } from "react-router-dom";
 import { createOrder } from "../../services/cartQueryFunction";
 import {useUpdateStock} from '../../hooks/cartHooks/useUpdateStock'
-import ErrorPage from "../ui/ErrorPage";
-import Alert from '@mui/material/Alert';
+import ErrorPage from "../ErrorPage";
+// import Alert from '@mui/material/Alert';
 const Cart = () => {
   const navigate=useNavigate()
     // const { data: user } = useAuth()
@@ -25,7 +25,7 @@ const Cart = () => {
   const queryClient = useQueryClient()
   const { data: user } = useAuth()
   const user_id = user?.$id
-  const { data: cartItems, isLoading, error } = useQuery(
+  const { data: cartItems, isLoading} = useQuery(
     ["cart", user_id],
     () => fetchCartItems(user_id),
     {

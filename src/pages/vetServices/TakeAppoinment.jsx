@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container, TextField, Button, Typography, Box, Alert, MenuItem, Select,
+  Container, TextField, Button, Typography, Box, MenuItem, Select,
   FormControl, InputLabel, Chip, OutlinedInput
 } from "@mui/material";
 import { useMutation } from "react-query";
@@ -9,7 +9,7 @@ import { useMutation } from "react-query";
 import { useAuth } from "../../hooks/useAuth";
 import { postService } from "../../services/queryFunctions";
 import { useNavigate } from "react-router-dom";
-import ErrorPage from "../ui/ErrorPage";
+import ErrorPage from "../ErrorPage";
 import Swal from "sweetalert2";
 const availableServices = [
   "General Checkup",
@@ -34,7 +34,7 @@ const TakeAppointment = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+  // const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
 
@@ -115,7 +115,7 @@ const TakeAppointment = () => {
         Book an Appointment
       </Typography>
 
-      {successMessage && <Alert severity="success">{successMessage}</Alert>}
+      {/* {successMessage && <Alert severity="success">{successMessage}</Alert>} */}
 
       <Box component="form" onSubmit={handleSubmit}>
 
@@ -158,33 +158,6 @@ const TakeAppointment = () => {
           error={!!errors.date}
           helperText={errors.date}
         />
-
-        {/* Multi-select Service Dropdown */}
-        {/* <FormControl fullWidth margin="normal" error={!!errors.services}>
-          <InputLabel>Select Services</InputLabel>
-          <Select
-            multiple
-            name="service"
-            value={formData.service}
-            onChange={handleChange}
-            input={<OutlinedInput label="Select Services" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-          >
-            {availableServices.map((service) => (
-              <MenuItem key={service} value={service}>
-                {service}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.services && <Typography color="error">{errors.services}</Typography>}
-        </FormControl> */}
-
         <FormControl fullWidth margin="normal" error={!!errors.service}>
           <InputLabel>Select Services</InputLabel>
           <Select

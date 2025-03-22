@@ -25,12 +25,12 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
 import DeliveryStatus from "../cart/DeliveryStatus";
 import OrderHistory from "../cart/OrderHistory";
-import ErrorPage from "../ui/ErrorPage";
+import ErrorPage from "../ErrorPage";
 import {getUserOrders} from '../../services/cartQueryFunction'
 import { useQuery } from "react-query";
 const Profile = () => {
   const navigate = useNavigate();
-  const { data: user, isLoading } = useAuth();
+  const { data: user} = useAuth();
   const { mutate: logout } = useLogout();
   //adoption application
   const [applications, setApplications] = useState([]);
@@ -69,7 +69,7 @@ const Profile = () => {
 //fetching orders for the user
 
  // Fetching user orders using React Query
- const { data: orders, isLoading:orderLoading } = useQuery({
+ const { data: orders} = useQuery({
   queryKey: ["userOrders"],
   queryFn: ()=>getUserOrders(user?.$id), // Fetching user orders from Appwrite
 });

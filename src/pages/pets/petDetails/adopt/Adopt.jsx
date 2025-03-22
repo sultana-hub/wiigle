@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
-import ErrorPage from "../../../ui/ErrorPage";
+import ErrorPage from "../../../ErrorPage";
 import {
   Container,
   TextField,
@@ -15,7 +15,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { postAdoption } from "../../../../services/queryFunctions";
-import PhoneInput from "react-phone-input-2";
+// import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css"; // Import styles for phone input
 import Swal from "sweetalert2";
 const Adopt = () => {
@@ -55,7 +55,7 @@ const Adopt = () => {
   };
 
 
-  const { mutate, isLoading, isError } = useMutation(postAdoption, {
+  const { mutate, isLoading } = useMutation(postAdoption, {
     onSuccess: () => {
        Swal.fire({
                
