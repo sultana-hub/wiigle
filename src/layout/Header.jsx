@@ -14,7 +14,7 @@ import { useQuery } from "react-query";
 const Header = () => {
   const { data: user } = useAuth();
   const location = useLocation();
-   const adimEmail="yahya@gmail.com"
+  const adimEmail = "yahya@gmail.com"
   const { data: cartItems = [] } = useQuery(["cartItems", user?.$id], () => fetchCartItems(user?.$id), {
     enabled: !!user?.$id,
     refetchOnWindowFocus: true,
@@ -25,17 +25,17 @@ const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);  
+    setDrawerOpen(open);
   };
- 
+
   const navLinks = [
     { label: "Products", path: "/product" },
-    user?.email!== adimEmail  && { label: "Vet Service", path: "/vet" },
+    user?.email !== adimEmail && { label: "Vet Service", path: "/vet" },
     !user?.$id && { label: "Register", path: "/signup" },
-    user?.email!== adimEmail  && { label: "Profile", path: "/profile" },
-    user?.email=== adimEmail  && { label: "Dashboard", path: "/admin" },
-    user?.email===adimEmail && {label:"Upload Pet",path:"/pet_upload"},
-    user?.email===adimEmail && {label:"Upload Products",path:"/products_upload"}
+    user?.email !== adimEmail && { label: "Profile", path: "/profile" },
+    user?.email === adimEmail && { label: "Dashboard", path: "/admin" },
+    user?.email === adimEmail && { label: "Upload Pet", path: "/pet_upload_details" },
+    user?.email === adimEmail && { label: "Upload Products", path: "/products_upload" }
   ].filter(Boolean);
 
   return (
@@ -80,9 +80,11 @@ const Header = () => {
                 variant="h6"
                 component={Link}
                 to="/"
-                sx={{ textDecoration: "none", color: "white", 
-                  mx:2,
-                  border:location.pathname==="/"?"2px solid blue":"none" }}
+                sx={{
+                  textDecoration: "none", color: "white",
+                  mx: 2,
+                  border: location.pathname === "/" ? "2px solid blue" : "none"
+                }}
               >
                 WiggleWag
               </Typography>

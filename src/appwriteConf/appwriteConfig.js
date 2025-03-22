@@ -9,3 +9,4 @@ export const account=new Account(client)
 
 export const database=new Databases(client,process.env.REACT_APP_APPWRITE_DATABASE_ID)
 export const storage=new Storage(client,process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID)
+export const petDetailsStorage=new Storage(client,process.env.REACT_APP_APPWRITE_PET_BUCKET_STOROAGE_ID)

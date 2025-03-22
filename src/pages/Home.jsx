@@ -59,7 +59,7 @@ const Home = () => {
             {reviews.map((review) => (
               <SwiperSlide key={review.$id}>
                 <Card sx={{ boxShadow: 3, borderRadius: 3, p: 2, bgcolor: "#f5f5f5" }}>
-                  <CardContent>
+                  <CardContent  sx={{ textAlign: "left" }}>
                     <Typography variant="h6" fontWeight="bold" color="primary">
                       {review.name}
                     </Typography>
