@@ -1,23 +1,9 @@
 
-import { database, account, storage, petDetailsStorage } from "../appwriteConf/appwriteConfig"; // Import Appwrite config
+import { database, storage, petDetailsStorage } from "../appwriteConf/appwriteConfig"; // Import Appwrite config
 import { ID } from "appwrite";
-import { Query } from 'appwrite'
-import Swal from "sweetalert2";
-//all pets
-export const fetchAllPets = async () => {
-  const response = await fetch(`https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID}/documents`, {
-    method: "GET",
-    headers: {
-      "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-      "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY
-    }
-  })
-  const respJson = await response.json()
-  console.log("fetchData pets", respJson) // Logs attribute values
-  return respJson?.documents
-}
 
 
+//  ******************************PRODUCTS QUERY FUNCTION*******************************************************************
 //all fetch products
 
 export const fetchAllProducts = async () => {
@@ -69,33 +55,71 @@ export const fetchProductById = async (proId) => {
 };
 
 
-
-
-//fetching pet details based on category
-
-export const petDetails = async () => {
-  try {
-    const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID}/documents`;
-    console.log("pet detail api", apiUrl)
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-        "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
-        "Content-Type": "application/json",
-      },
-    })
-    const resJson = await response.json()
-    console.log("pet details", resJson)
-    return resJson?.documents
-  } catch (error) {
-    console.log("error in fetching pet details", error)
-  }
+//upload products*****************************************************
+export const uploadProductsData = async (image, products) => {
+  if (!image) throw new Error("Please select an image")
+  const file = await storage.createFile(
+    process.env.REACT_APP_APPWRITE_PRODUCTS_IMAGES_STORAGE_ID,
+    ID.unique(),
+    image
+  )
+  const imageId = file.$id;
+  await database.createDocument(
+    process.env.REACT_APP_APPWRITE_DATABASE_ID,
+    process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID,
+    ID.unique(),
+    { ...products, imageId }
+  );
 }
 
 
+// Removing item from Products
+export const deleteProduct = async (product_id) => {
+  return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID, process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID, product_id);
+};
 
-//  ADOPTION .......................................................................................
+
+//update products
+export const updateProduct = async ({ id, price, quantity }) => {
+  const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID}/documents/${id}`;
+
+  console.log("Updating document ID:", id);
+  console.log("API URL:", apiUrl);
+
+  const payload = {
+    data: {
+      price: String(price), // Ensure price is a string
+      quantity: parseInt(quantity) // Ensure quantity is a number
+    }
+  };
+
+  console.log("Payload being sent:", JSON.stringify(payload, null, 2));
+
+  const res = await fetch(apiUrl, {
+    method: "PATCH", // PATCH to update specific fields
+    headers: {
+      "Content-Type": "application/json",
+      "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
+      "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+  console.log("API Response:", data);
+
+  if (!res.ok) {
+    throw new Error(`Failed to update product: ${data.message || "Unknown error"}`);
+  }
+
+  return data;
+};
+
+
+
+
+
+// .................................. PET ADOPTION QUERY FUNCTION......................................................
 
 export const postAdoption = async (data) => {
   try {
@@ -136,7 +160,7 @@ export const postAdoption = async (data) => {
     alert(`Error: ${error.message}`);
   }
 }
-
+// fetch adoptions details
 export const fetchApplications = async () => {
   try {
     const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_ADOPTION_COLLECTION_ID}/documents`;
@@ -158,7 +182,7 @@ export const fetchApplications = async () => {
 }
 
 
-
+//adoption application status
 export const updateApplicationStatus = async ({ id, status }) => {
   const res = await fetch(
     `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_ADOPTION_COLLECTION_ID}/documents/${id}`,
@@ -188,7 +212,7 @@ export const updateApplicationStatus = async ({ id, status }) => {
 };
 
 
-//fet application by id
+//fetch adoption application by email
 export const fetchApplicationsByEmail = async (email) => {
   try {
     const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_ADOPTION_COLLECTION_ID}/documents/${email}`;
@@ -210,9 +234,7 @@ export const fetchApplicationsByEmail = async (email) => {
 }
 
 
-
-
-// service application
+//******************************************* */ VET service application QUERY FUNCTIONS/******************************** */
 
 export const postService = async (data) => {
   try {
@@ -251,7 +273,7 @@ export const postService = async (data) => {
   }
 }
 
-// vet application status admin
+// VET SERVICE application status admin
 
 export const updateVetApplicationStatus = async ({ id, status }) => {
   const res = await fetch(
@@ -281,7 +303,7 @@ export const updateVetApplicationStatus = async ({ id, status }) => {
   return data;
 };
 
-// fetching service application 
+// fetching VET SERVICE application 
 export const fetchServiceApplications = async () => {
   try {
     const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_VET_COLLECTION_ID}/documents`;
@@ -303,7 +325,7 @@ export const fetchServiceApplications = async () => {
 }
 
 
-// Review section
+// **************************************************/Review section Query functions/**************************** */
 export const fetchReviews = async () => {
   try {
     const response = await database.listDocuments(process.env.REACT_APP_APPWRITE_DATABASE_ID,
@@ -337,29 +359,33 @@ export const deleteReview = async (reviewId) => {
 
 
 
+//*********************************************all PET queryfunctions are here *********************************************
 
-//upload pet and products admin section  
-
-export const uploadPetData = async (image, petData) => {
-  if (!image) throw new Error("Please select an image");
-
-  const file = await storage.createFile(
-    process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID,
-    ID.unique(),
-    image
-  );
-  const imageId = file.$id;
-
-  await database.createDocument(
+// Function to update pet status in Appwrite
+export const updatePetStatus = async ({ petId, newStatus }) => {
+  await database.updateDocument(
     process.env.REACT_APP_APPWRITE_DATABASE_ID,
-    process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID,
-    ID.unique(),
-    { ...petData, imageId }
+    process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID,
+    petId,
+    { status: newStatus }
   );
-}
+};
 
 
+//delete pet
 
+export const deletePet = async (petid) => {
+  if (!petid) {
+    throw new Error("Pet ID is required for deletion.");
+  }
+  console.log("Deleting Pet ID:", petid); // Debugging: Ensure ID is passed
+
+  return database.deleteDocument(
+    process.env.REACT_APP_APPWRITE_DATABASE_ID,
+    process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID,
+    petid
+  );
+};
 
 //upload pet details and products admin section  
 
@@ -380,123 +406,58 @@ export const uploadPetDetailsData = async (image, petData) => {
     { ...petData, imageId }
   );
 }
+//Upload pet details
+export const uploadPetData = async (image, petData) => {
+  if (!image) throw new Error("Please select an image");
 
-
-
-
-export const uploadProductsData = async (image, products) => {
-  if (!image) throw new Error("Please select an image")
   const file = await storage.createFile(
-    process.env.REACT_APP_APPWRITE_PRODUCTS_IMAGES_STORAGE_ID,
+    process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID,
     ID.unique(),
     image
-  )
+  );
   const imageId = file.$id;
+
   await database.createDocument(
     process.env.REACT_APP_APPWRITE_DATABASE_ID,
-    process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID,
+    process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID,
     ID.unique(),
-    { ...products, imageId }
+    { ...petData, imageId }
   );
 }
 
+//fetching pet details based on category
 
-// Removing item from Products
-export const deleteProduct = async (product_id) => {
-  return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID, process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID, product_id);
-};
+export const petDetails = async () => {
+  try {
+    const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID}/documents`;
+    console.log("pet detail api", apiUrl)
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
+        "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
+        "Content-Type": "application/json",
+      },
+    })
+    const resJson = await response.json()
+    console.log("pet details", resJson)
+    return resJson?.documents
+  } catch (error) {
+    console.log("error in fetching pet details", error)
+  }
+}
 
-
-//   export const updateProduct = async ({ id, price, quantity }) => {
-//     const url = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID}/documents/${id}`;
-
-//     console.log("Updating Product at:", url);
-
-//     const res = await fetch(url, {
-//         method: "PATCH", 
-//         headers: {
-//             "Content-Type": "application/json",
-//             "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-//             "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
-//         },
-//         body: JSON.stringify({
-//             price: price.toString(), 
-//             quantity: Number(quantity) 
-//         }),
-//     });
-
-//     const data = await res.json();
-//     console.log("API Response:", data); 
-
-//     if (!res.ok) {
-//         throw new Error(`Failed to update product: ${data.message || "Unknown error"}`);
-//     }
-
-//     return data;
-// };
-export const updateProduct = async ({ id, price, quantity }) => {
-  const apiUrl = `https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID}/documents/${id}`;
-
-  console.log("Updating document ID:", id);
-  console.log("API URL:", apiUrl);
-
-  const payload = {
-    data: {
-      price: String(price), // Ensure price is a string
-      quantity: parseInt(quantity) // Ensure quantity is a number
-    }
-  };
-
-  console.log("Payload being sent:", JSON.stringify(payload, null, 2));
-
-  const res = await fetch(apiUrl, {
-    method: "PATCH", // PATCH to update specific fields
+//all pets for home page
+export const fetchAllPets = async () => {
+  const response = await fetch(`https://cloud.appwrite.io/v1/databases/${process.env.REACT_APP_APPWRITE_DATABASE_ID}/collections/${process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID}/documents`, {
+    method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-      "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const data = await res.json();
-  console.log("API Response:", data);
-
-  if (!res.ok) {
-    throw new Error(`Failed to update product: ${data.message || "Unknown error"}`);
-  }
-
-  return data;
-};
-
-
-// Function to update pet status in Appwrite
-export const updatePetStatus = async ({ petId, newStatus }) => {
-  await database.updateDocument(
-    process.env.REACT_APP_APPWRITE_DATABASE_ID,
-    process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID,
-    petId,
-    { status: newStatus }
-  );
-};
-
-
-// Removing pets 
-// export const deletePet = async (petId) => {
-//   return await database.deleteDocument(
-//     process.env.REACT_APP_APPWRITE_DATABASE_ID,
-//     process.env.REACT_APP_APPWRITE_PET_COLLECTION_ID, petId);
-// };
-
-export const deletePet = async (petid) => {
-  if (!petid) {
-    throw new Error("Pet ID is required for deletion.");
-  }
-  console.log("Deleting Pet ID:", petid); // Debugging: Ensure ID is passed
-
-  return database.deleteDocument(
-    process.env.REACT_APP_APPWRITE_DATABASE_ID,
-    process.env.REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID,
-    petid
-  );
-};
+      "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY
+    }
+  })
+  const respJson = await response.json()
+  console.log("fetchData pets", respJson) // Logs attribute values
+  return respJson?.documents
+}
+// ***********************************************END PETS QUERY  FUNCTIONS***********************************************
