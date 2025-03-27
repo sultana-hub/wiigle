@@ -18,6 +18,7 @@ const PetDetails = () => {
   const queryClient = useQueryClient();
   const { mutate: changeStatus } = useMutation(updatePetStatus, {
     onSuccess: () => {
+      alert("Pet Status changed successfully!");
       queryClient.invalidateQueries(["pets"]);
     },
   });

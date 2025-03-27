@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import { fetchAllProducts, deleteProduct } from '../../services/queryFunctions'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+// import { styled } from '@mui/material/styles';
+// import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
 import { Box, Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
 import Search from '../../components/Search';
@@ -80,7 +80,13 @@ const Products = () => {
                             />
                             <CardContent sx={{ textAlign: "left" }}>
                                 <Typography variant="h6">{item.product_brand}</Typography>
-                                <Typography variant="h6">Stock: {item.quantity}</Typography>
+                                {
+                                    item.quantity===0 ? ( <Typography>Stock: Out Of Stock</Typography>):
+                                    (
+                                        <Typography>Stock: {item.quantity}</Typography>
+                                    )
+                                }
+                              
     
                                 <Button
                                     variant="contained"

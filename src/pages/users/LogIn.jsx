@@ -13,6 +13,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useLogin } from "../../hooks/useLogin";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 const LogIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -22,11 +23,34 @@ const LogIn = () => {
 
   const { mutate, isLoading, isError } = useLogin();
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   mutate({ email, password });
+  //   navigate("/");
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ email, password });
-    navigate("/");
+    setErrors({}); // Clear previous errors
+  
+    mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+             Swal.fire({
+                   
+                    text: "Login Successfull!",
+                    icon: "success"
+                  });
+          navigate("/");
+        },
+        onError: (error) => {
+          setErrors({ general: error.message || "Invalid Credentials" });
+        },
+      }
+    );
   };
+
 
   return (
     <Container maxWidth="sm" sx={{ p: 5 }}>
@@ -53,7 +77,7 @@ const LogIn = () => {
             onChange={(e) => setEmail(e.target.value)}
             error={!!errors.email}
             helperText={errors.email}
-            autoComplete="email"
+            autoComplete="new-email"
           />
           
           <TextField
@@ -66,7 +90,7 @@ const LogIn = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={!!errors.password}
             helperText={errors.password}
-            autoComplete="current-password"
+            autoComplete="new-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

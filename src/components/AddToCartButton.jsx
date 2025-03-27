@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { useCart } from "../hooks/cartHooks/useCart";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { ToastContainer, toast } from 'material-react-toastify';
+
 const AddToCartButton = ({ user_id, product_id, brand, price, imageId,weight }) => {
 
   const  navigate=useNavigate()

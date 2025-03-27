@@ -55,26 +55,34 @@ console.log("cart item",cartItems)
   };
   //check out
   console.log("cart items", cartItems)
+
   const totalPrice = cartItems?.reduce(
-    (total, item) => total + (item?.price || 0) * (item?.quantity || 1),
+    (total, item) => total + (parseFloat(item?.price) || 0) * (parseInt(item?.quantity) || 1),
     0
   );
 
   //remove from cart
   const { mutate } = useMutation(removeFromCart, {
     onSuccess: () => {
-       alert("Item deleted 😔!")
-      // Swal.fire({
-      //   title: "😔!",
-      //   text: "Item deleted!"
-      // });
-      // toast.success('Item deleted');
+  console.log("success in cart")
     },
     onError: () => console.log("error in delete")
   })
   //deleting the cart item
   const onDelete = (itemId) => {
-    mutate(itemId)
+    mutate(itemId,{
+      onSuccess: () => {
+        
+       Swal.fire({
+         title: "😔!",
+         text: "Item deleted!"
+       });
+       setTimeout(()=>{
+        navigate("/product")
+       },2000)
+
+     },
+    })
 
   }
 
@@ -91,7 +99,10 @@ console.log("cart item",cartItems)
   }
 
   const handleCheckout = async (cartItems, userId) => {
-    window.confirm("Proceeding to Checkout...");
+   const val= window.confirm("Proceeding to Checkout...");
+   if(val){
+
+   
       Swal.fire({
           title: "😊",
           text: "Proceeding to payment !"
@@ -134,8 +145,11 @@ console.log("cart item",cartItems)
     }
     navigate("/delivery")
 
-  };
-
+  }
+  else{
+    navigate("/cart")
+  }
+  }
   console.log("cart items", cartItems)
 
   if (!user) {

@@ -57,26 +57,26 @@ const Adopt = () => {
 
   const { mutate, isLoading } = useMutation(postAdoption, {
     onSuccess: () => {
-       Swal.fire({
-               
-                text: "Request Submitted!",
-                icon: "success"
-              });
+      Swal.fire({
+
+        text: "Request Submitted!",
+        icon: "success"
+      });
       navigate("/");
     },
     onError: (error) => {
       console.log("Mutation error", error);
     },
   });
- // Regular Expression for phone number validation
- const phoneRegex =  /^\+91[6789]\d{9}$/; 
+  // Regular Expression for phone number validation
+  const phoneRegex = /^\+91[6789]\d{9}$/;
   // Form validation
   const validateForm = () => {
     let newErrors = {};
     if (!formData.fullname) newErrors.fullname = "Full Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!phoneRegex.test(formData.phone))
-        newErrors.phone = "Enter a valid phone number with country code (e.g., +919456789023)";
+      newErrors.phone = "Enter a valid phone number with country code (e.g., +919456789023)";
     if (!formData.address) newErrors.address = "Address is required";
     if (formData.desc.length < 10)
       newErrors.desc = "Description should be at least 10 characters";
@@ -135,27 +135,27 @@ const Adopt = () => {
 
           {/* Phone Number with Country Code */}
           <TextField
-    fullWidth
-    label="Phone Number"
-    name="phone"
-    type="text"
-    variant="outlined"
-    margin="normal"
-    value={formData.phone}
-    onChange={(e) => {
-        let value = e.target.value;
+            fullWidth
+            label="Phone Number"
+            name="phone"
+            type="text"
+            variant="outlined"
+            margin="normal"
+            value={formData.phone}
+            onChange={(e) => {
+              let value = e.target.value;
 
-        // Ensure only `+` and digits are allowed
-        value = value.replace(/(?!^\+)[^0-9]/g, "");
+              // Ensure only `+` and digits are allowed
+              value = value.replace(/(?!^\+)[^0-9]/g, "");
 
-        setFormData((prevData) => ({
-            ...prevData,
-            phone: value,
-        }));
-    }}
-    error={!!errors?.phone}
-    helperText={errors?.phone}
-/>
+              setFormData((prevData) => ({
+                ...prevData,
+                phone: value,
+              }));
+            }}
+            error={!!errors?.phone}
+            helperText={errors?.phone}
+          />
 
           {/* Address */}
           <TextField

@@ -6,7 +6,7 @@ import {
   Container,
   Button,
   Typography,
-  Alert,
+ Alert,
   TextField,
   Box,
   IconButton,
@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { account } from "../../appwriteConf/appwriteConfig";
 import { ID } from "appwrite";
-import SuccessToast from "../../components/SuccessToast";
+
 import Swal from "sweetalert2";
 const SignUp = () => {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const SignUp = () => {
 
   // State for error messages
   const [error, setError] = useState("");
+  // const [errors, setErrors] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -40,12 +41,16 @@ const SignUp = () => {
 
   // Validator function
   const validator = () => {
+    let newErrors = {};
     if (!formData.name) return "Name is required.";
+    if(formData.name.length<3) return "Name must be minimum 3 characters"
     if (!formData.email) return "Email is required.";
     if (!formData.email.match(/^([a-z0-9.-]+)@([a-z]{5,12}).([a-z.]{2,20})$/)) return "Email must be valid";
-    if (formData.password.length < 8) return "Password must be at least 8 characters.";
-    if (formData.password !== formData.confirmPassword) return "Passwords do not match.";
-    return ""; // No errors
+    if (formData.password.length < 8) newErrors.password= "Password must be at least 8 characters.";
+    if (formData.password !== formData.confirmPassword) return "Password and ConfirmPassword did not match.";
+    // setErrors(newErrors)
+    // return Object.keys(newErrors).length===0; // No errors
+    return ""  // No errors
   };
 
   // Checking if the form is valid using useMemo (for performance optimization)
@@ -61,7 +66,7 @@ const SignUp = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationError = validator();
+    const validationError = validator()
     if (validationError) {
       setError(validationError);
       return;
@@ -90,6 +95,11 @@ const SignUp = () => {
     <Container maxWidth="md">
       <Box sx={{ mt: 5, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        {/* {error && Object.values(error).map((errMsg, index) => (
+  <Alert key={index} severity="error" sx={{ mb: 2 }}>
+    {errMsg}
+  </Alert>
+))} */}
         <Typography variant="h5" align="center" gutterBottom color="rgb(63, 57, 113)">
           Registration
         </Typography>
@@ -103,6 +113,8 @@ const SignUp = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            // error={!!errors.name}
+            // helperText={errors.name}
           />
           <TextField
             fullWidth
@@ -114,6 +126,8 @@ const SignUp = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            // error={!!errors.email}
+            // helperText={errors.email}
             autoComplete="new-email"
           />
           <TextField
@@ -126,6 +140,8 @@ const SignUp = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            // error={!!errors.password}
+            // helperText={errors.password}
             autoComplete="new-password"
             InputProps={{
               endAdornment: (
@@ -147,6 +163,8 @@ const SignUp = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
+            // error={!!errors.confirmPassword}
+            // helperText={errors.confirmPassword}
             autoComplete="new-password"
             InputProps={{
               endAdornment: (

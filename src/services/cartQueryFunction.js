@@ -60,12 +60,14 @@ export const addToCart = async ({ user_id, product_id,imageId,brand,price,quanti
   
   // Removing item from cart
   export const removeFromCart = async (cartItemId) => {
-    return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, cartItemId);
+    return await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+      process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, cartItemId);
   };
 
   // Updating quantity in Appwrite database
 export const updateCartItem = async ({ id, quantity }) => {
-  await database.updateDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID, process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, id, {
+  await database.updateDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+     process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, id, {
     quantity,
   });
 };
