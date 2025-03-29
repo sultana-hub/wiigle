@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { createOrder } from "../../services/cartQueryFunction";
 import {useUpdateStock} from '../../hooks/cartHooks/useUpdateStock'
 import ErrorPage from "../ErrorPage";
+
 // import Alert from '@mui/material/Alert';
 const Cart = () => {
   const navigate=useNavigate()
@@ -25,22 +26,31 @@ const Cart = () => {
   const queryClient = useQueryClient()
   const { data: user } = useAuth()
   const user_id = user?.$id
-  const { data: cartItems, isLoading} = useQuery(
+ 
+
+  const { data: cartItems=[], isLoading} = useQuery(
     ["cart", user_id],
     () => fetchCartItems(user_id),
     {
       enabled: !!user_id, // Ensuring query only runs if userId is available
-    }
+    },
+  
   );
+
 console.log("cart item",cartItems)
   // Updating quantity when increment/decrement buttons are clicked
 
   // Mutation to update item quantity
   const mutation = useMutation(updateCartItem, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["cart"]); // Refetching cart data after update
+     
+      queryClient.invalidateQueries(["cart",user_id]); // Refetching cart data after update
+      queryClient.refetchQueries(["cartItems", user?.$id]); // ✅ Forces refetch
     },
   });
+
+
+  
 
   // Increase quantity
   const handleIncrease = (itemId, quantity) => {
@@ -90,7 +100,8 @@ console.log("cart item",cartItems)
   const clearCart = async () => {
     try {
       for (const item of cartItems) {
-        await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID, process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, item.$id)
+        await database.deleteDocument(process.env.REACT_APP_APPWRITE_DATABASE_ID,
+           process.env.REACT_APP_APPWRITE_CART_COLLECTION_ID, item.$id)
       }
       console.log("cart cleared")
     } catch (error) {

@@ -15,11 +15,19 @@ const Header = () => {
   const { data: user } = useAuth();
   const location = useLocation();
   const adimEmail = "yahya@gmail.com"
-  const { data: cartItems = [] } = useQuery(["cartItems", user?.$id], () => fetchCartItems(user?.$id), {
-    enabled: !!user?.$id,
-    refetchOnWindowFocus: true,
-  });
-
+  
+  const { data: cartItems = []} = useQuery(
+    ["cartItems", user?.$id],
+    async () => {
+      const items = await fetchCartItems(user?.$id);
+    
+      return items;
+    },
+    { enabled: !!user?.$id, refetchOnWindowFocus: true }
+  );
+  // Calculate the total quantity of all items
+const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+  
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -110,7 +118,7 @@ const Header = () => {
           <AuthButton />
           {user?.email !== "yahya@gmail.com" && (
             <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
-              <Badge badgeContent={cartItems?.length} color="error">
+              <Badge badgeContent={totalQuantity} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
