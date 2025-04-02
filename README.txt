@@ -14,6 +14,8 @@ npm i react-query
 npm i react@18.2.0 react-dom@18.2.0   
 npm uninstall react react-dom
 
+To clone from GitHub just type in vs code terminal :navigate to the desired folder and just type the command git clone <project GitHub url>
+
 To upload in github using git bash:
 
 Step 1: Right click on folder-> git bash here
