@@ -99,8 +99,17 @@ const PetDetails = () => {
 
 
     <>
+    <Grid  sx={{ textAlign: "center",mt:"20px" }}>
+    <Typography variant="h6" color="rgb(63, 57, 113)" sx={{ mb: 3 }}>
+                Lovely pets are  available for adotion
+               </Typography>
+    </Grid>
+
      
-      <Box sx={{ flexGrow: 1, mb: 5, px: 2, mt: 5 }}>
+      <Box sx={{ flexGrow: 1, mb: 5, px: 2}}>
+       
+
+
         {/* Products Grid */}
         <Grid container spacing={3} justifyContent="center">
           {data?.map((item, index) => (

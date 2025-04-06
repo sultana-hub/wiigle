@@ -87,9 +87,11 @@ console.log("cart item",cartItems)
          title: "😔!",
          text: "Item deleted!"
        });
+
        setTimeout(()=>{
-        navigate("/product")
-       },2000)
+         navigate("/cart")
+        window.location.reload()
+       })
 
      },
     })
@@ -162,15 +164,19 @@ console.log("cart item",cartItems)
   }
   }
   console.log("cart items", cartItems)
+  if (isLoading) return <CircularProgress />;
 
   if (!user) {
     return (
-      <ErrorPage />
+      setTimeout(()=>{
+        <ErrorPage />
+      },3000)
+     
     )
   }
 
 
-  if (isLoading) return <CircularProgress />;
+
 
   return (
     <Container>

@@ -68,7 +68,7 @@ const Products = () => {
                                 boxShadow: 3,
                                 borderRadius: "10px",
                                 transition: "0.3s",
-                                "&:hover": { transform: "scale(1.05)" },
+                                "&:hover": { transform: "scale(1.05)" ,border:"2px solid blue"},
                             }}
                         >
                             <CardMedia

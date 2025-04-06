@@ -40,7 +40,7 @@ const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0
     { label: "Products", path: "/product" },
     user?.email !== adimEmail && { label: "Vet Service", path: "/vet" },
     !user?.$id && { label: "Register", path: "/signup" },
-    user?.email !== adimEmail && { label: "Profile", path: "/profile" },
+    user?.$id && user?.email !== adimEmail && { label: "Profile", path: "/profile" },
     user?.email === adimEmail && { label: "Dashboard", path: "/admin" },
     user?.email === adimEmail && { label: "Upload Pet", path: "/pet_upload_details" },
     user?.email === adimEmail && { label: "Upload Products", path: "/products_upload" }
