@@ -116,7 +116,7 @@ const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0
             ))}
 
           <AuthButton />
-          {user?.email !== "yahya@gmail.com" && (
+          {user?.email !== "yahya@gmail.com" && user && (
             <IconButton component={Link} to="/cart" color="inherit" sx={{ ml: 2 }}>
               <Badge badgeContent={totalQuantity} color="error">
                 <ShoppingCartIcon />

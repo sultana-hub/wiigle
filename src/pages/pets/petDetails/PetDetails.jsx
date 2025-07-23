@@ -129,7 +129,7 @@ const PetDetails = () => {
                   image={
                     item.imageId
                       ? petDetailsStorage.getFileView(
-                        process.env.REACT_APP_APPWRITE_PET_BUCKET_STOROAGE_ID,
+                        process.env.REACT_APP_APPWRITE_PET_BUCKET_IMAGE_ID,
                         item.imageId
                       )
                       : ""
