@@ -1,70 +1,147 @@
-# Getting Started with Create React App
+🐶 Wiggle Wag Pet Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Wiggle Wag Pet Shop is a full-stack pet eCommerce platform where users can adopt pets, book vet appointments, shop pet products, add reviews, and track orders — all in one place.
+Built with React.js, Redux Toolkit, MUI, and Supabase/Appwrite for a modern and scalable user experience.
 
-## Available Scripts
+🚀 Live Demo
 
-In the project directory, you can run:
+🔗 View Live Project[https://wiggle-wag.vercel.app/]
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🧩 Features
+🛒 For Users
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Browse, search, and filter pets and pet products
 
-### `npm test`
+Add items to Cart and Wishlist
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Place orders with free payment gateway integration
 
-### `npm run build`
+Track order status (Delivered / In Progress / Cancelled)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Submit and view product reviews
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Adopt pets by submitting an application form
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Book vet appointments with available time slots
 
-### `npm run eject`
+Responsive UI with MUI and Tailwind CSS
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+🧑‍💼 For Admin
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Dashboard with summary cards for:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Pet Adoption Applications
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Vet Appointments
 
-## Learn More
+Orders
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Approve / Reject adoption applications
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Manage products, users, and reviews
 
-### Code Splitting
+View and manage all orders in one page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+🛠️ Tech Stack
+Category	Technologies
+Frontend	React.js, React Query, MUI
+Backend	
+Database	 Appwrite
+Authentication	Appwrite Auth +jwt
+Storage	Appwrite Storage / Supabase Bucket
+Payment	Stripe (Test Mode)
+Form Handling	React Controlled Form
+Hosting	Vercel (Frontend) 
 
-### Analyzing the Bundle Size
+⚙️ Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/sultana-hub/wiigle.git
+cd wigglewag-pet-shop
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2️⃣ Install Dependencies
+npm install
 
-### Making a Progressive Web App
+3️⃣ Configure Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Create a .env file in the root directory and add:
 
-### Advanced Configuration
+REACT_APP_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+REACT_APP_APPWRITE_PROJECT_ID=Your Project Id    
 
-### Deployment
+REACT_APP_APPWRITE_DATABASE_ID=Your Database Id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+REACT_APP_APPWRITE_STORAGE_ID=Your Storage ID
 
-### `npm run build` fails to minify
+REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID=Your Storage Id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+REACT_APP_APPWRITE_PET_BUCKET_IMAGE_ID=Your Bucket Id
+
+REACT_APP_APPWRITE_PET_COLLECTION_ID=Your Collection Id
+
+REACT_APP_APPWRITE_PRODUCTS_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_PRODUCTS_IMAGES_STORAGE_ID=Your Storage
+
+REACT_APP_APPWRITE_CART_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_PET_DETAILS_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_ADOPTION_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_VET_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_ORDERS_COLLECTION_ID=Your Id
+
+REACT_APP_APPWRITE_REVIEW_COLLECTION_ID=Your Id
+
+
+REACT_APP_APPWRITE_API_KEY= your appwrite api key
+
+4️⃣ Run the Development Server
+npm start
+
+
+App runs locally at 👉 http://localhost:3000
+
+
+🧠 Key Functionalities Explained
+Feature	Description
+Pet Adoption Form	Stores user-submitted data in Appwrite collection
+Vet Appointment	Uses uncontrolled form + React Query for submission
+Add to Cart / Wishlist	Managed via React Query and Appwrite backend
+Admin Panel	Displays data in cards with Manage button for details
+Image Uploads	Stored in Appwrite Storage and linked via URLs
+Payment Flow	Stripe test mode with redirect to order status page
+🔐 Authentication Flow
+
+User registration and login handled via Appwrite Authentication
+
+
+🧑‍💻 Author
+
+👩‍💻 Parveen Sultana
+Full Stack Developer (MERN + Appwrite )
+📧 Email: [psultana6@gmail.com]
+
+🌐 Portfolio: https://sultana-portfolio.vercel.app/
+
+🌐 Backend Portfolio:https://portfolio-yh4z.onrender.com
+
+💼 LinkedIn: https://www.linkedin.com/in/parveen-sultana-84671b6a/
+
+⭐ Contributing
+
+Contributions are welcome!
+If you’d like to improve Wiggle Wag, please:
+
+Fork the repository
+
+Create your feature branch (git checkout -b feature-name)
+
+Commit your changes (git commit -m "Added feature-name")
+
+Push to the branch (git push origin feature-name)
+
+Open a Pull Request 🚀

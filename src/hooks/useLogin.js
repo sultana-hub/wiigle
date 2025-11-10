@@ -6,15 +6,12 @@ const loginUser = async ({ email, password }) => {
   return session;
 };
 
-// export const useLogin = () => {
-//   return useMutation(loginUser);
-// };
+
 export const useLogin = () => {
     const queryClient = useQueryClient();
     return useMutation(loginUser, {
       onSuccess: () => {
            Swal.fire({
-                
                   text: "Login Successfully!",
                   icon: "success"
                 });

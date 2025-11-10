@@ -6,10 +6,6 @@ const logoutUser = async () => {
   return await account.deleteSession("current"); // Logs out the current session
 };
 
-// export const useLogout = () => {
-//   return useMutation(logoutUser);
-// };
-
 export const useLogout = () => {
   const navigate=useNavigate()
     const queryClient = useQueryClient();
