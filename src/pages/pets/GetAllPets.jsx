@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useQuery } from 'react-query'
 import { Button } from '@mui/material';
 import { storage } from '../../appwriteConf/appwriteConfig'
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Container, Box, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Box, Typography, Grid } from "@mui/material";
 
 import { DATABASE_ID, COLLECTION_PET_ID, APPWRITE_END_POINT } from "../../appwriteConf/appwriteConstants";
 const GetAllPets = () => {
@@ -24,7 +24,7 @@ const GetAllPets = () => {
     return jsonRes?.documents;
   };
 
-  const { data, isLoading, isSuccess, isError } = useQuery("pets", fetchPet)
+  const { data, isLoading } = useQuery("pets", fetchPet)
   console.log("result", data)
 
 
@@ -36,54 +36,56 @@ const GetAllPets = () => {
   return (
     <>
       {/* customised code  */}
-      <Box sx={{ px: 2, mt: 3, mr: 3 }}>
-        {data?.map((item) => (
-          <Card
-            key={item.id}
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" }, // Column on small screens, Row on medium+
-              width: "100%",
-              borderRadius: 2,
-              boxShadow: 3,
-              mt: 3,
-              p: 2,
-            }}
-          >
-            {/* Left-side Image */}
-            <CardMedia
-              component="img"
-              sx={{
-                width: { xs: "100%", md: 300 }, // Full width on small screens
-                height: 300,
-                objectFit: "cover",
-                borderRadius: "10px",
-              }}
-              image={item.imageId ? storage.getFileView(process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID, item.imageId) : ""}
-              alt={item.category}
-            />
 
-            {/* Right-side Description */}
-            <CardContent
+      {/* <Box sx={{ px: 2, mt: 3, mr: 3, display: 'grid', }}> */}
+      <Grid container spacing={3} px={2} mt={3} mr={3}>
+        {data?.map((item) => (
+          <Grid item xs={12} md={6}>
+            <Card
+               key={item.id}
               sx={{
-                flex: 1,
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                textAlign: { xs: "center", md: "left" },
-                px: { xs: 1, md: 3 }, // Adjusting padding based on screen size
+                flexDirection: { xs: "column", md: "row" }, // Column on small screens, Row on medium+
+                width: "100%",
+                borderRadius: 2,
+                boxShadow: 3,
+                mt: 3,
+                p: 2,
+                mr:5
               }}
             >
-              <Typography variant="h6" fontWeight="bold" sx={{ color: "rgb(63, 57, 113)" }}>
-                Cute {item.category}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {item.desc}
-              </Typography>
-            </CardContent>
+              {/* Left-side Image */}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: { xs: "100%", md: 300 }, // Full width on small screens
+                  height: 300,
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                }}
+                image={item.imageId ? storage.getFileView(process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID, item.imageId) : ""}
+                alt={item.category}
+              />
 
-            {/* Button Section */}
-            <CardContent
+              {/* Right-side Description */}
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  textAlign: { xs: "center", md: "left" },
+                  px: { xs: 1, md: 3 },
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold" sx={{ color: "rgb(63, 57, 113)" }}>
+                  Cute {item.category}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.desc}
+                </Typography>
+                  {/* Button Section */}
+               <CardContent
               sx={{
                 display: "flex",
                 justifyContent: { xs: "center", md: "flex-end" },
@@ -112,10 +114,17 @@ const GetAllPets = () => {
               >
                 View More
               </Button>
-            </CardContent>
-          </Card>
+            </CardContent> 
+              </CardContent>
+
+            
+
+            </Card>
+          </Grid>
         ))}
-      </Box>
+        {/* </Box> */}
+      </Grid>
+
 
     </>
   )
