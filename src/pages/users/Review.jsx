@@ -214,7 +214,7 @@ const Review = () => {
         >
           {reviews.map((r) => (
             <SwiperSlide key={r.$id}>
-              <Card sx={{ boxShadow: 3, borderRadius: 3, p: 2, bgcolor: "#f5f5f5" }}>
+              <Card sx={{ boxShadow: 3, borderRadius: 3, p: 2, bgcolor: "#f5f5f5" ,mb: 6 }}>
                 <CardContent  sx={{ textAlign: "left" }}>
                   <Typography variant="h6" fontWeight="bold" color="primary">
                     {r.name}

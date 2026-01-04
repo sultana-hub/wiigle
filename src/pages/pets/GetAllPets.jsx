@@ -14,7 +14,6 @@ const GetAllPets = () => {
       method: "GET",
       headers: {
         "X-Appwrite-Project": process.env.REACT_APP_APPWRITE_PROJECT_ID,
-        "Access-Control-Allow-Origin": "*",
         "X-Appwrite-Key": process.env.REACT_APP_APPWRITE_API_KEY
       }
     });
@@ -38,11 +37,11 @@ const GetAllPets = () => {
       {/* customised code  */}
 
       {/* <Box sx={{ px: 2, mt: 3, mr: 3, display: 'grid', }}> */}
-      <Grid container spacing={3} px={2} mt={3} mr={3}>
+      <Grid container px={2} pr={6} mt={3} >
         {data?.map((item) => (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} sx={{ p: 3 }}>
             <Card
-               key={item.id}
+              key={item.id}
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" }, // Column on small screens, Row on medium+
@@ -50,18 +49,20 @@ const GetAllPets = () => {
                 borderRadius: 2,
                 boxShadow: 3,
                 mt: 3,
-                p: 2,
-                mr:5
+                px: 2,   // 👈 horizontal padding only
+                py: 2
+
               }}
             >
               {/* Left-side Image */}
               <CardMedia
                 component="img"
                 sx={{
-                  width: { xs: "100%", md: 300 }, // Full width on small screens
+                  width: { xs: "100%", md: 200 }, // Full width on small screens
                   height: 300,
                   objectFit: "cover",
                   borderRadius: "10px",
+                  mr: { xs: 0, md: 2 }
                 }}
                 image={item.imageId ? storage.getFileView(process.env.REACT_APP_APPWRITE_PET_IMAGE_STORAGE_ID, item.imageId) : ""}
                 alt={item.category}
@@ -84,40 +85,40 @@ const GetAllPets = () => {
                 <Typography variant="body2" color="text.secondary">
                   {item.desc}
                 </Typography>
-                  {/* Button Section */}
-               <CardContent
-              sx={{
-                display: "flex",
-                justifyContent: { xs: "center", md: "flex-end" },
-                alignItems: "center",
-                textAlign: "center",
-                p: 2,
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  background: "linear-gradient(135deg,rgb(104, 106, 110) 0%,rgb(63, 57, 113) 100%)",
-                  color: "white",
-                  fontWeight: "bold",
-                  textTransform: "none",
-                  borderRadius: "30px",
-                  padding: "10px 20px",
-                  boxShadow: "0px 4px 10px rgba(255, 126, 95, 0.4)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    background: "linear-gradient(135deg, #e66465 0%, #9198e5 100%)",
-                    boxShadow: "0px 6px 15px rgba(230, 100, 101, 0.5)",
-                  },
-                }}
-                onClick={() => navigate("/pet_details")}
-              >
-                View More
-              </Button>
-            </CardContent> 
+                {/* Button Section */}
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    justifyContent: { xs: "center", md: "flex-end" },
+                    alignItems: "center",
+                    textAlign: "center",
+                    p: 2,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      background: "linear-gradient(135deg,rgb(104, 106, 110) 0%,rgb(63, 57, 113) 100%)",
+                      color: "white",
+                      fontWeight: "bold",
+                      textTransform: "none",
+                      borderRadius: "30px",
+                      padding: "10px 20px",
+                      boxShadow: "0px 4px 10px rgba(255, 126, 95, 0.4)",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        background: "linear-gradient(135deg, #e66465 0%, #9198e5 100%)",
+                        boxShadow: "0px 6px 15px rgba(230, 100, 101, 0.5)",
+                      },
+                    }}
+                    onClick={() => navigate("/pet_details")}
+                  >
+                    View More
+                  </Button>
+                </CardContent>
               </CardContent>
 
-            
+
 
             </Card>
           </Grid>
